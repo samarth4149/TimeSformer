@@ -13,6 +13,7 @@ from timesformer.utils.misc import launch_job
 from timesformer.utils.parser import load_config
 
 from tools.run_net import get_func
+import uuid
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -97,6 +98,15 @@ def launch(shard_id, num_shards, cfg, init_method):
         launch_job(cfg=cfg, init_method=init_method, func=test)
 
 
+def get_init_file(root):
+    # Init file must not exist, but it's parent dir must exist.
+    root = os.path.abspath(root)
+    os.makedirs(root, exist_ok=True)
+    init_file = Path(root) / f"{uuid.uuid4().hex}_init"
+    if init_file.exists():
+        os.remove(str(init_file))
+    return init_file
+
 class Trainer(object):
     def __init__(self, args):
         self.args = args
@@ -113,7 +123,7 @@ class Trainer(object):
         hostname_first_node = os.popen(
             "scontrol show hostnames $SLURM_JOB_NODELIST"
         ).read().split("\n")[0]
-        dist_url = "tcp://{}:12399".format(hostname_first_node)
+        dist_url = get_init_file(root='dist_init_files').as_uri()
         print("We will use the following dist url: {}".format(dist_url))
 
         self._setup_gpu_args()
@@ -123,6 +133,12 @@ class Trainer(object):
             cfg=load_config(self.args),
             init_method=dist_url,
         )
+        # cfg = load_config(self.args)
+        # train, test = get_func(cfg)
+        # if cfg.TRAIN.ENABLE:
+        #     train
+            
+        
         return results
 
     def checkpoint(self):
