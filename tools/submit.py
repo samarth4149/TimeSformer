@@ -172,16 +172,21 @@ def main():
         kwargs['slurm_constraint'] = 'volta32gb,ib4'
     if args.comment:
         kwargs['slurm_comment'] = args.comment
+        
+    addnl_params = {
+        'gres': 'gpu:{:d}'.format(num_gpus_per_node)
+    }
 
     executor.update_parameters(
         mem_gb=60 * num_gpus_per_node,
-        gpus_per_node=num_gpus_per_node,
-        tasks_per_node=1,
-        cpus_per_task=10 * num_gpus_per_node,
+        # gpus_per_node=num_gpus_per_node,
+        tasks_per_node=num_gpus_per_node,
+        cpus_per_task=10,
         nodes=nodes,
         timeout_min=timeout_min,  # max is 60 * 72
         # slurm_partition=partition,
         slurm_signal_delay_s=120,
+        slurm_additional_parameters=addnl_params,
         **kwargs
     )
 
