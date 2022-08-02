@@ -33,7 +33,7 @@ def parse_args():
     # parser.add_argument(
     #     "--partition", default="", type=str, help="Partition where to submit"
     # )
-    parser.add_argument("--timeout", default=60 * 72, type=int, help="Duration of the job")
+    parser.add_argument("--timeout", default=360, type=int, help="Duration of the job")
     parser.add_argument("--cfg", dest="cfg_file", help="Path to the config file",
                         default="configs/test_R50_8GPU.yaml", type=str)
     parser.add_argument(
