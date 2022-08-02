@@ -6,7 +6,7 @@ import torch
 
 
 def run(
-    local_rank,
+    # local_rank,
     num_proc,
     func,
     init_method,
@@ -42,9 +42,16 @@ def run(
             master process.
     """
     # Initialize the process group.
-    world_size = num_proc * num_shards
-    rank = shard_id * num_proc + local_rank
-
+    import os
+    if 'RANK' in os.environ and 'WORLD_SIZE' in os.environ:
+        rank = int(os.environ["RANK"])
+        world_size = int(os.environ['WORLD_SIZE'])
+        local_rank = int(os.environ['LOCAL_RANK'])
+    elif 'SLURM_PROCID' in os.environ:
+        # In case of slurm, args.world_size is set in run_with_submitit.py
+        rank = int(os.environ['SLURM_PROCID'])
+        world_size = num_proc * num_shards
+    
     try:
         torch.distributed.init_process_group(
             backend=backend,

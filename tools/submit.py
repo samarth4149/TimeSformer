@@ -159,6 +159,7 @@ class Trainer(object):
         print(self.args)
 
         self.args.machine_rank = job_env.global_rank
+        self.args.world_size = job_env.num_tasks
         print(f"Process rank: {job_env.global_rank}")
 
 

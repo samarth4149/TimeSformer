@@ -282,20 +282,27 @@ def launch_job(cfg, init_method, func, daemon=False):
             daemonic processes will be created
     """
     if cfg.NUM_GPUS > 1:
-        torch.multiprocessing.spawn(
-            mpu.run,
-            nprocs=cfg.NUM_GPUS,
-            args=(
-                cfg.NUM_GPUS,
+        # torch.multiprocessing.spawn(
+        #     mpu.run,
+        #     nprocs=cfg.NUM_GPUS,
+        #     args=(
+        #         cfg.NUM_GPUS,
+        #         func,
+        #         init_method,
+        #         cfg.SHARD_ID,
+        #         cfg.NUM_SHARDS,
+        #         cfg.DIST_BACKEND,
+        #         cfg,
+        #     ),
+        #     daemon=daemon,
+        # )
+        mpu.run(cfg.NUM_GPUS,
                 func,
                 init_method,
                 cfg.SHARD_ID,
                 cfg.NUM_SHARDS,
                 cfg.DIST_BACKEND,
-                cfg,
-            ),
-            daemon=daemon,
-        )
+                cfg,)
     else:
         func(cfg=cfg)
 
