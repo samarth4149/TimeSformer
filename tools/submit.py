@@ -30,9 +30,9 @@ def parse_args():
         default=1,
         type=int,
     )
-    parser.add_argument(
-        "--partition", default="learnfair", type=str, help="Partition where to submit"
-    )
+    # parser.add_argument(
+    #     "--partition", default="", type=str, help="Partition where to submit"
+    # )
     parser.add_argument("--timeout", default=60 * 72, type=int, help="Duration of the job")
     parser.add_argument("--cfg", dest="cfg_file", help="Path to the config file",
                         default="configs/test_R50_8GPU.yaml", type=str)
@@ -165,7 +165,7 @@ def main():
     # cluster setup is defined by environment variables
     num_gpus_per_node = args.num_gpus
     nodes = args.num_shards
-    partition = args.partition
+    # partition = args.partition
     timeout_min = args.timeout
     kwargs = {}
     if args.use_volta32:
@@ -180,7 +180,7 @@ def main():
         cpus_per_task=10 * num_gpus_per_node,
         nodes=nodes,
         timeout_min=timeout_min,  # max is 60 * 72
-        slurm_partition=partition,
+        # slurm_partition=partition,
         slurm_signal_delay_s=120,
         **kwargs
     )
