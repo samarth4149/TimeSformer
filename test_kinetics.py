@@ -11,7 +11,7 @@ if __name__ == '__main__':
     data_file_paths = [data_file_base / 'kinetics150_1000e_train.txt', data_file_base / 'kinetics150val.txt']
     vid_base = Path('/gpfs/u/home/DPLD/DPLDpndr/scratch-shared/datasets/Kinetics400_256/videos_satori')
 
-    out_dir = Path('data_file/minikinetics')
+    out_dir = Path('data_files/minikinetics')
     os.makedirs(out_dir, exist_ok=True)
     
     for df in data_file_paths:
