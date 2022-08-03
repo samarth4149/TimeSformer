@@ -2,6 +2,7 @@
 
 """Multiprocessing helpers."""
 
+from threading import local
 import torch
 
 
@@ -51,7 +52,7 @@ def run(
         # In case of slurm, args.world_size is set in run_with_submitit.py
         rank = int(os.environ['SLURM_PROCID'])
         world_size = num_proc * num_shards
-    
+        local_rank = rank % num_proc
     try:
         torch.distributed.init_process_group(
             backend=backend,
