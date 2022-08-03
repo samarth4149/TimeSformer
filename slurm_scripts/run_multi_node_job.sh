@@ -2,7 +2,7 @@
 # A script with a list of commands for submitting SLURM jobs
 
 #### Kinetics training
-JOB_NAME=MiniKinetics_TimeSformer_divST_8x32_224
+JOB_NAME=MiniKinetics_TimeSformer_divST_8x32_224_large_batch
 python tools/submit.py --cfg configs/MiniKinetics/TimeSformer_divST_8x32_224.yaml --job_dir  expts/${JOB_NAME}/  --num_shards 8 --num_gpus 6 --name ${JOB_NAME}
 
 #JOB_NAME=TimeSformer_jointST_8x32_224
