@@ -28,5 +28,5 @@ if __name__ == '__main__':
                 if not os.path.exists(curr_path):
                     raise Exception(f'{curr_path} does not exist')
                 
-                print(f'{curr_path} {label}', file=fout)
+                print(f'{curr_path};{label}', file=fout)
     
