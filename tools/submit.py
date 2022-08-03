@@ -120,18 +120,18 @@ class Trainer(object):
         os.environ["NCCL_SOCKET_IFNAME"] = socket_name
 
 
-        hostname_first_node = os.popen(
-            "scontrol show hostnames $SLURM_JOB_NODELIST"
-        ).read().split("\n")[0]
-        dist_url = get_init_file(root='dist_init_files').as_uri()
-        print("We will use the following dist url: {}".format(dist_url))
+        # hostname_first_node = os.popen(
+        #     "scontrol show hostnames $SLURM_JOB_NODELIST"
+        # ).read().split("\n")[0]
+        # dist_url = get_init_file(root='dist_init_files').as_uri()
+        print("We will use the following dist url: {}".format(self.args.dist_url))
 
         self._setup_gpu_args()
         results = launch(
             shard_id=self.args.machine_rank,
             num_shards=self.args.num_shards,
             cfg=load_config(self.args),
-            init_method=dist_url,
+            init_method=self.args.dist_url,
         )
         # cfg = load_config(self.args)
         # train, test = get_func(cfg)
@@ -198,7 +198,7 @@ def main():
         mem_gb=60 * num_gpus_per_node,
         # gpus_per_node=num_gpus_per_node,
         tasks_per_node=num_gpus_per_node,
-        cpus_per_task=10,
+        cpus_per_task=24,
         nodes=nodes,
         timeout_min=timeout_min,  # max is 60 * 72
         # slurm_partition=partition,
@@ -210,6 +210,8 @@ def main():
 
     print(args.name)
     executor.update_parameters(name=args.name)
+    
+    args.dist_url = get_init_file(root='dist_init_files').as_uri()
 
     trainer = Trainer(args)
     job = executor.submit(trainer)
