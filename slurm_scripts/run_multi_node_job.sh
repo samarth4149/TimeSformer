@@ -3,7 +3,7 @@
 
 #### Kinetics training
 JOB_NAME=MiniKinetics_TimeSformer_divST_8x32_224
-python tools/submit.py --cfg configs/MiniKinetics/TimeSformer_divST_8x32_224.yaml --job_dir  expts/${JOB_NAME}/  --num_shards 2 --num_gpus 6 --name ${JOB_NAME}
+python tools/submit.py --cfg configs/MiniKinetics/TimeSformer_divST_8x32_224.yaml --job_dir  expts/${JOB_NAME}/  --num_shards 8 --num_gpus 6 --name ${JOB_NAME}
 
 #JOB_NAME=TimeSformer_jointST_8x32_224
 #python tools/submit.py --cfg configs/Kinetics/TimeSformer_jointST_8x32_224.yaml --job_dir  /your/job/dir/${JOB_NAME}/   --num_shards 4 --partition learnfair --comment "" --name ${JOB_NAME} --use_volta32
