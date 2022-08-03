@@ -146,6 +146,7 @@ class Trainer(object):
 
         job_env = submitit.JobEnvironment()
         slurm_job_id = job_env.job_id
+        self.args.dist_url = get_init_file(root='expts/dist_init_files').as_uri()
         if self.args.resume_job == "":
             self.args.resume_job = slurm_job_id
         print("Requeuing ", self.args)
