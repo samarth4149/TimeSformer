@@ -232,6 +232,9 @@ _C.MODEL.FC_INIT_STD = 0.01
 # Activation layer for the output head.
 _C.MODEL.HEAD_ACT = "softmax"
 
+# Whether or not to use a pre-trained model
+_C.MODEL.PRETRAINED = True
+
 
 # -----------------------------------------------------------------------------
 # SlowFast options
