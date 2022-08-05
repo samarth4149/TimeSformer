@@ -3,7 +3,7 @@ TRAIN:
   DATASET: kinetics
   BATCH_SIZE: 8
   EVAL_PERIOD: 5
-  CHECKPOINT_PERIOD: 5
+  CHECKPOINT_PERIOD: 1
   AUTO_RESUME: True
 DATA:
   PATH_TO_DATA_DIR: /gpfs/u/home/DPLD/DPLDsmms/scratch/projects/TimeSformer/data_files/minikinetics
