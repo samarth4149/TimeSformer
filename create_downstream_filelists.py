@@ -13,7 +13,7 @@ if __name__ == '__main__':
     for data_name, dataset in datasets.items():
         if data_name == 'ucf101':
             continue
-        
+        print('Processing {}'.format(data_name))
         data_base = Path(dataset['path'])
         out_path = Path('data_files') / data_name
         os.makedirs(out_path, exist_ok=True)
