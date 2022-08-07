@@ -11,8 +11,11 @@ if __name__ == '__main__':
         datasets = yaml.load(f, Loader=yaml.FullLoader)
     
     for data_name, dataset in datasets.items():
+        if data_name == 'ucf101':
+            continue
+        
         data_base = Path(dataset['path'])
-        out_path = Path('data_files') / dataset['name']
+        out_path = Path('data_files') / data_name
         os.makedirs(out_path, exist_ok=True)
         for mode in ['train', 'val']:
             fout = open(out_path / f'{mode}.csv', 'w')
