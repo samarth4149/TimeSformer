@@ -1,0 +1,41 @@
+uav :
+  path: /gpfs/u/home/DPLD/DPLDpndr/scratch-shared/datasets/uav_human/videos
+  add_suffix: '.avi'
+  strip_prefix: 1
+  train_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/uav_human/annotations/uav_train_synact.txt
+  val_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/uav_human/annotations/uav_val_synact.txt
+  num_classes: 115 
+  separator: ';'
+ikea_furniture : # no need to convert this filelist 
+  path: /gpfs/u/home/DPLD/DPLDpndr/scratch-shared/datasets/ikea_furniture/videos
+  add_suffix: ''
+  strip_prefix: 0
+  train_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/ikea_furniture/annotations/ikea_train.txt
+  val_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/ikea_furniture/annotations/ikea_val.txt
+  num_classes: 12
+  separator: ' '
+diving48 : 
+  path: /gpfs/u/home/DPLD/DPLDpndr/scratch-shared/datasets/diving48/videos
+  add_suffix: '.mp4'
+  strip_prefix: 0
+  train_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/diving48/annotations/Diving48_V2_train_synact.txt
+  val_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/diving48/annotations/Diving48_V2_test_synact.txt
+  num_classes: 48
+  separator: ';'
+ucf101: 
+hmdb51: 
+  path: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/hmdb51/videos
+  add_suffix: ''
+  strip_prefix: 0
+  train_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/ikea_furniture/annotations/hmdb51_train_split_1_videos.txt
+  val_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/ikea_furniture/annotations/hmdb51_val_split_1_videos.txt
+  num_classes: 51
+  separator: ' '
+mini_ssv2: 
+  path: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/something2something-v2/videos
+  add_suffix: ''
+  strip_prefix: 1
+  train_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/something2something-v2/annotations/mini_train.txt
+  val_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/something2something-v2/annotations/mini_val.txt
+  num_classes: 87
+  separator: ' '
