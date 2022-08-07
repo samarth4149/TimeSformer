@@ -27,8 +27,8 @@ hmdb51:
   path: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/hmdb51/videos
   add_suffix: ''
   strip_prefix: 0
-  train_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/ikea_furniture/annotations/hmdb51_train_split_1_videos.txt
-  val_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/ikea_furniture/annotations/hmdb51_val_split_1_videos.txt
+  train_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/hmdb51/annotations/hmdb51_train_split_1_videos.txt
+  val_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/hmdb51/annotations/hmdb51_val_split_1_videos.txt
   num_classes: 51
   separator: ' '
 mini_ssv2: 
