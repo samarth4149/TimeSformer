@@ -14,6 +14,8 @@ if __name__ == '__main__':
     out_dir = Path('data_files/minimoments')
     os.makedirs(out_dir, exist_ok=True)
     
+    fmissing = open('missing_files', 'w')
+    
     for df in data_file_paths:
         if 'train' in df.name:
             outfile = out_dir / 'train.csv'
@@ -28,7 +30,8 @@ if __name__ == '__main__':
                 label = row[3]
                 curr_path = vid_base / split / fname
                 if not os.path.exists(curr_path):
-                    raise Exception(f'{curr_path} does not exist')
-                
-                print(f'{curr_path};{label}', file=fout)
-    
+                    # raise Exception(f'{curr_path} does not exist')
+                    print(f'{split}/{fname}', file=fmissing)
+                else:
+                    print(f'{curr_path};{label}', file=fout)
+    fmissing.close()
