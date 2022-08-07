@@ -26,7 +26,7 @@ if __name__ == '__main__':
             for row in reader:
                 fname = row[0]
                 label = row[3]
-                curr_path = vid_base / split / ('/'.join(fname.split('/')[1:]) + '.mp4')
+                curr_path = vid_base / split / fname
                 if not os.path.exists(curr_path):
                     raise Exception(f'{curr_path} does not exist')
                 
