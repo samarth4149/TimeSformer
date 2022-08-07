@@ -21,7 +21,7 @@ diving48 :
   train_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/diving48/annotations/Diving48_V2_train_synact.txt
   val_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/diving48/annotations/Diving48_V2_test_synact.txt
   num_classes: 48
-  separator: ';'
+  separator: ','
 ucf101: 
 hmdb51: 
   path: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/hmdb51/videos
