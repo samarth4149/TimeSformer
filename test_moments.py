@@ -14,7 +14,7 @@ if __name__ == '__main__':
     out_dir = Path('data_files/minimoments')
     os.makedirs(out_dir, exist_ok=True)
     
-    fmissing = open('missing_files', 'w')
+    fmissing = open(out_dir / 'missing_files.txt', 'w')
     
     for df in data_file_paths:
         if 'train' in df.name:
