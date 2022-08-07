@@ -1,7 +1,7 @@
 uav :
   path: /gpfs/u/home/DPLD/DPLDpndr/scratch-shared/datasets/uav_human/videos
   add_suffix: '.avi'
-  strip_prefix: 1
+  strip_prefix: 2
   train_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/uav_human/annotations/uav_train_synact.txt
   val_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/uav_human/annotations/uav_val_synact.txt
   num_classes: 115 
@@ -35,7 +35,7 @@ mini_ssv2:
   path: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/something2something-v2/videos
   add_suffix: ''
   strip_prefix: 1
-  train_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/something2something-v2/annotations/mini_train.txt
-  val_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/something2something-v2/annotations/mini_val.txt
+  train_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/something2something-v2/mini_train.txt
+  val_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/something2something-v2/mini_val.txt
   num_classes: 87
   separator: ' '
