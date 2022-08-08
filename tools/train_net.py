@@ -432,8 +432,8 @@ def train(cfg):
                 param.requires_grad = False
                 #param.grad = None
         # print('pre', pre_params[1])      
-        model.head.weight.requires_grad = True
-        model.head.bias.requires_grad = True
+        model.module.head.weight.requires_grad = True
+        model.module.head.bias.requires_grad = True
 
     # Create the video train and val loaders.
     train_loader = loader.construct_loader(cfg, "train")
