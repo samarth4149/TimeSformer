@@ -23,6 +23,13 @@ diving48 :
   num_classes: 48
   separator: ','
 ucf101: 
+  path: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/ucf101/videos
+  add_suffix: ''
+  strip_prefix: 0
+  train_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/ucf101/annotations/ucf101_train_split_1_videos.txt
+  val_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/ucf101/annotations/ucf101_val_split_1_videos.txt
+  num_classes: 101
+  separator: ' '
 hmdb51: 
   path: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/hmdb51/videos
   add_suffix: ''
