@@ -27,7 +27,6 @@ SOLVER:
   MOMENTUM: 0.9
   WEIGHT_DECAY: 1e-4
   OPTIMIZING_METHOD: sgd
-  LIN_PROBE: true
 MODEL:
   MODEL_NAME: vit_base_patch16_224
   NUM_CLASSES: 150
@@ -35,6 +34,7 @@ MODEL:
   LOSS_FUNC: cross_entropy
   DROPOUT_RATE: 0.5
   PRETRAINED: true
+  LIN_PROBE: true
 TEST:
   ENABLE: True
   DATASET: kinetics
