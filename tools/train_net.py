@@ -111,7 +111,7 @@ def train_epoch(
             loss.backward()
             if (cur_iter + 1) % num_iters == 0:
                 for p in model.parameters():
-                    if p.grad:
+                    if p.grad is not None:
                         p.grad /= num_iters
                 optimizer.step()
                 optimizer.zero_grad()
