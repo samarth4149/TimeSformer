@@ -11,7 +11,7 @@ if __name__ == '__main__':
         datasets = yaml.load(f, Loader=yaml.FullLoader)
     
     for data_name, dataset in datasets.items():
-        if data_name == 'ucf101':
+        if data_name != 'ucf101':
             continue
         print('Processing {}'.format(data_name))
         data_base = Path(dataset['path'])
