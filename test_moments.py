@@ -8,7 +8,8 @@ from tqdm import tqdm
 if __name__ == '__main__':
     
     data_file_base = Path('/gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/Moments')
-    data_file_paths = [data_file_base / 'moments150_kinetics_overlap_train.txt', data_file_base / 'moments150_kinetics_overlap_val.txt']
+    data_file_paths = [data_file_base / 'moments150_kinetics_overlap_train_synact.txt', 
+                       data_file_base / 'moments150_kinetics_overlap_val_synact.txt']
     vid_base = Path('/gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/Moments/videos')
 
     out_dir = Path('data_files/minimoments')
@@ -24,7 +25,7 @@ if __name__ == '__main__':
             outfile = out_dir / 'val.csv'
             split = 'val'
         with open(df, 'r') as f, open(outfile, 'w') as fout:
-            reader = csv.reader(f, delimiter=';')
+            reader = csv.reader(f, delimiter=' ')
             for row in reader:
                 fname = row[0]
                 label = row[3]
