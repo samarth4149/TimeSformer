@@ -424,9 +424,9 @@ def train(cfg):
       cu.load_checkpoint(cfg.TRAIN.CHECKPOINT_FILE_PATH, model)
 
     if cfg.MODEL.LIN_PROBE:
-        pre_params = []
+        # pre_params = []
         for param in model.parameters():
-            pre_params.append(param)
+            # pre_params.append(param)
             if param.requires_grad:
                 #print("!!training tensor found", param)
                 param.requires_grad = False
