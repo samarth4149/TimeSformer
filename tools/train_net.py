@@ -408,18 +408,32 @@ def train(cfg):
 
     # Build the video model and print model statistics.
     model = build_model(cfg)
+    
     if du.is_master_proc() and cfg.LOG_MODEL_INFO:
         misc.log_model_info(model, cfg, use_train_input=True)
 
     # Construct the optimizer.
     optimizer = optim.construct_optimizer(model, cfg)
 
+    # TODO : first time on launching job FINETUNE should be true and then become false on resubmit
     # Load a checkpoint to resume training if applicable.
     if not cfg.TRAIN.FINETUNE:
       start_epoch = cu.load_train_checkpoint(cfg, model, optimizer)
     else:
       start_epoch = 0
       cu.load_checkpoint(cfg.TRAIN.CHECKPOINT_FILE_PATH, model)
+
+    if cfg.MODEL.LIN_PROBE:
+        pre_params = []
+        for param in model.parameters():
+            pre_params.append(param)
+            if param.requires_grad:
+                #print("!!training tensor found", param)
+                param.requires_grad = False
+                #param.grad = None
+        # print('pre', pre_params[1])      
+        model.head.weight.requires_grad = True
+        model.head.bias.requires_grad = True
 
     # Create the video train and val loaders.
     train_loader = loader.construct_loader(cfg, "train")

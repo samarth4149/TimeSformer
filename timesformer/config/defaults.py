@@ -235,6 +235,9 @@ _C.MODEL.HEAD_ACT = "softmax"
 # Whether or not to use a pre-trained model
 _C.MODEL.PRETRAINED = True
 
+# Whether to freeze backbone weights during training
+_C.MODEL.LIN_PROBE = False
+
 
 # -----------------------------------------------------------------------------
 # SlowFast options

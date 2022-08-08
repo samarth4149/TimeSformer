@@ -149,6 +149,9 @@ class Trainer(object):
         self.args.dist_url = get_init_file(root='expts/dist_init_files').as_uri()
         if self.args.resume_job == "":
             self.args.resume_job = slurm_job_id
+        cfg = load_config(self.args)
+        if cfg.TRAIN.FINETUNE:
+            self.args.opts.extend(["TRAIN.FINETUNE", "False"])
         print("Requeuing ", self.args)
         empty_trainer = type(self)(self.args)
         return submitit.helpers.DelayedSubmission(empty_trainer)
