@@ -29,10 +29,10 @@ if __name__ == '__main__':
             for row in reader:
                 fname = row[0]
                 label = row[3]
-                curr_path = vid_base / split / fname
+                curr_path = vid_base / split / f'{fname}.mp4'
                 if not os.path.exists(curr_path):
                     print(f'{curr_path} does not exist')
-                    print(f'{split}/{fname}', file=fmissing)
+                    print(f'{split}/{fname}.mp4', file=fmissing)
                 else:
                     print(f'{curr_path};{label}', file=fout)
     fmissing.close()
