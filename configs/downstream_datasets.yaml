@@ -4,7 +4,7 @@ uav :
   strip_prefix: 2
   train_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/uav_human/annotations/uav_train_synact.txt
   val_file: /gpfs/u/home/DPLD/DPLDsmms/scratch-shared/datasets/uav_human/annotations/uav_val_synact.txt
-  num_classes: 115 
+  num_classes: 155 
   separator: ';'
 ikea_furniture : # no need to convert this filelist 
   path: /gpfs/u/home/DPLD/DPLDpndr/scratch-shared/datasets/ikea_furniture/videos
