@@ -11,7 +11,7 @@ if __name__ == '__main__':
         datasets = yaml.load(f, Loader=yaml.FullLoader)
     
     for data_name, dataset in datasets.items():
-        if data_name != 'ucf101':
+        if data_name != 'hmdb51':
             continue
         print('Processing {}'.format(data_name))
         data_base = Path(dataset['path'])
@@ -34,6 +34,6 @@ if __name__ == '__main__':
                     if not curr_path.exists():
                         print('Missing file in {}: {}'.format(data_name, curr_path))
                         print(curr_path, file=fout_missing)
-                    print(f'{curr_path};{label}', file=fout)
+                    print(f'{curr_path} {label}', file=fout)
             
             fout.close()
