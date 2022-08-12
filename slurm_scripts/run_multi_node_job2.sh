@@ -2,8 +2,8 @@
 # A script with a list of commands for submitting SLURM jobs
 
 #### Kinetics training
-JOB_NAME=MiniMoments_TimeSformer_divST_8x32_224_pt
-python tools/submit.py --cfg configs/MiniMoments/TimeSformer_divST_8x32_224_pt.yaml --job_dir  expts/${JOB_NAME}/  --num_shards 4 --num_gpus 4 --name ${JOB_NAME}
+JOB_NAME=MiniSynthetic_TimeSformer_divST_8x32_224_pt
+python tools/submit.py --cfg configs/MiniSynthetic/TimeSformer_divST_8x32_224_pt.yaml --job_dir  expts/${JOB_NAME}/  --num_shards 4 --num_gpus 4 --name ${JOB_NAME}
 
 #JOB_NAME=TimeSformer_jointST_8x32_224
 #python tools/submit.py --cfg configs/Kinetics/TimeSformer_jointST_8x32_224.yaml --job_dir  /your/job/dir/${JOB_NAME}/   --num_shards 4 --partition learnfair --comment "" --name ${JOB_NAME} --use_volta32
