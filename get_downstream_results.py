@@ -6,7 +6,7 @@ import json
 
 if __name__ == '__main__':
     downstream_datasets = ['ucf101', 'hmdb51', 'mini_ssv2', 'diving48', 'ikea_furniture', 'uav',]
-    pt_methods = ['synthetic_pt', 'synthetic_scratch']
+    pt_methods = ['moments_pt', 'moments_scratch']
     downstream_modes = ['lin_probe', 'finetune']
     df = pd.DataFrame(columns=downstream_datasets, index=pd.MultiIndex.from_product([pt_methods, downstream_modes], names=['pt_method', 'mode']))
     
@@ -19,7 +19,7 @@ if __name__ == '__main__':
                     for l in lines[::-1]:
                         if '{' in l:
                             log_dict = json.loads('{' + l.split('{')[1])
-                            if log_dict['_type']!='val_epoch':
+                            if log_dict['_type']!='val_epoch' and log_dict['epoch']!='20/20':
                                 print('Something wrong with log at {}'.format(curr_path))
                             else:
                                 df.loc[(p, m), d] = 100. - float(log_dict['top1_err'])
