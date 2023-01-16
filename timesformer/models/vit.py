@@ -34,6 +34,10 @@ default_cfgs = {
         url='https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-vitjx/jx_vit_base_p16_224-80ecf9dd.pth',
         mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5),
     ),
+    'vit_small_patch16_224': _cfg(
+        url='https://no-default-model-url',
+        mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5),
+    ),
 }
 
 class Mlp(nn.Module):
@@ -314,6 +318,25 @@ def _conv_filter(state_dict, patch_size=16):
             v = v.reshape((v.shape[0], 3, patch_size, patch_size))
         out_dict[k] = v
     return out_dict
+
+@MODEL_REGISTRY.register()
+class vit_small_patch16_224(nn.Module):
+    def __init__(self, cfg, **kwargs):
+        super(vit_small_patch16_224, self).__init__()
+        self.pretrained=cfg.MODEL.PRETRAINED
+        patch_size = 16
+        self.model = VisionTransformer(img_size=cfg.DATA.TRAIN_CROP_SIZE, num_classes=cfg.MODEL.NUM_CLASSES, patch_size=patch_size, embed_dim=384, depth=12, num_heads=6, mlp_ratio=4, qkv_bias=True, norm_layer=partial(nn.LayerNorm, eps=1e-6), drop_rate=0., attn_drop_rate=0., drop_path_rate=0.1, num_frames=cfg.DATA.NUM_FRAMES, attention_type=cfg.TIMESFORMER.ATTENTION_TYPE, **kwargs)
+
+        self.attention_type = cfg.TIMESFORMER.ATTENTION_TYPE
+        self.model.default_cfg = default_cfgs['vit_small_patch16_224']
+        self.num_patches = (cfg.DATA.TRAIN_CROP_SIZE // patch_size) * (cfg.DATA.TRAIN_CROP_SIZE // patch_size)
+        pretrained_model=cfg.TIMESFORMER.PRETRAINED_MODEL
+        if self.pretrained:
+            load_pretrained(self.model, num_classes=self.model.num_classes, in_chans=kwargs.get('in_chans', 3), filter_fn=_conv_filter, img_size=cfg.DATA.TRAIN_CROP_SIZE, num_patches=self.num_patches, attention_type=self.attention_type, pretrained_model=pretrained_model)
+
+    def forward(self, x):
+        x = self.model(x)
+        return x
 
 @MODEL_REGISTRY.register()
 class vit_base_patch16_224(nn.Module):
