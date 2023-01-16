@@ -16,7 +16,7 @@ DATA:
   INPUT_CHANNEL_NUM: [3]
 TIMESFORMER:
   ATTENTION_TYPE: 'divided_space_time'
-  PRETRAINED_MODEL: 'pass_model/dino_deit_300ep_ttemp0o07_warumup30ep_normlayerF.pth.tar'
+  PRETRAINED_MODEL: 'pass_model/student_dict.pth.tar'
 SOLVER:
   BASE_LR: 0.005
   LR_POLICY: steps_with_relative_lrs
