@@ -238,6 +238,8 @@ _C.MODEL.PRETRAINED = True
 # Whether to freeze backbone weights during training
 _C.MODEL.LIN_PROBE = False
 
+# Whether to finetune only temporal attention
+_C.MODEL.TATT_ONLY_FT = False
 
 # -----------------------------------------------------------------------------
 # SlowFast options
