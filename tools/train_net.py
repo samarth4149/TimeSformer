@@ -435,6 +435,14 @@ def train(cfg):
         # print('pre', pre_params[1])      
         model.module.model.head.weight.requires_grad = True
         model.module.model.head.bias.requires_grad = True
+    elif cfg.MODEL.TATT_ONLY_FT:
+        # Only temporal attention modules get updated 
+        # along with the last linear layer.
+        for name, param in model.named_parameters():
+            if param.requires_grad and 'temporal' not in name:
+                param.requires_grad = False
+        model.module.model.head.weight.requires_grad = True
+        model.module.model.head.bias.requires_grad = True
 
     # Create the video train and val loaders.
     train_loader = loader.construct_loader(cfg, "train")
