@@ -1,6 +1,6 @@
 #!/bin/bash
 #### Kinetics training
-for dset in hmdb51 ucf101;
+for dset in uav ikea_furniture diving48 mini_ssv2;
 # for dset in hmdb51 ucf101 uav ikea_furniture diving48 mini_ssv2;
 # for dset in mini_ssv2;
 do
