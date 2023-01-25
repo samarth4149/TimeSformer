@@ -20,9 +20,9 @@ TIMESFORMER:
 SOLVER:
   BASE_LR: 0.005
   LR_POLICY: steps_with_relative_lrs
-  STEPS: [0, 22, 28]
+  STEPS: [0, 55, 70]
   LRS: [1, 0.1, 0.01]
-  MAX_EPOCH: 30
+  MAX_EPOCH: 75
   MOMENTUM: 0.9
   WEIGHT_DECAY: 1e-4
   OPTIMIZING_METHOD: sgd
