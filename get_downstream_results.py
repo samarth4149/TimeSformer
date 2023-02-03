@@ -6,14 +6,14 @@ import json
 
 if __name__ == '__main__':
     downstream_datasets = ['ucf101', 'hmdb51', 'mini_ssv2', 'diving48', 'ikea_furniture', 'uav',]
-    pt_methods = ['synthetic_scratch', 'synthetic_pass_pt', 'synthetic_only_tatt_pass_pt']
+    pt_methods = ['MiniSynthetic_vit_s_in1k_pt', 'MiniSynthetic_vit_s_pass_dino_pt', 'MiniSynthetic_vit_s_pass_dino_pt_tatt_only_ft', 'MiniSynthetic_vit_s_scratch']
     downstream_modes = ['lin_probe', 'finetune']
     df = pd.DataFrame(columns=downstream_datasets, index=pd.MultiIndex.from_product([pt_methods, downstream_modes], names=['pt_method', 'mode']))
     
     for p in pt_methods:
         for m in downstream_modes:
             for d in downstream_datasets:
-                curr_path = f'expts/downstream/from_{p}/{d}_{m}/stdout.log'
+                curr_path = f'expts/downstream/from_{p}/{p}_{d}_{m}/stdout.log'
                 with open(curr_path, 'r') as f:
                     lines = f.read().splitlines()
                     for l in lines[::-1]:
