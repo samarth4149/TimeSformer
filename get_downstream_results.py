@@ -3,6 +3,7 @@ import sys
 sys.path.append(os.path.abspath('.'))
 import pandas as pd
 import json
+from json import JSONDecodeError
 
 if __name__ == '__main__':
     downstream_datasets = ['ucf101', 'hmdb51', 'mini_ssv2', 'diving48', 'ikea_furniture', 'uav',]
@@ -18,7 +19,11 @@ if __name__ == '__main__':
                     lines = f.read().splitlines()
                     for l in lines[::-1]:
                         if '{' in l:
-                            log_dict = json.loads('{' + l.split('{')[1])
+                            try:
+                                log_dict = json.loads('{' + l.split('{')[1])
+                            except JSONDecodeError:
+                                print('Something wrong with log at {}'.format(curr_path))
+                                break
                             if log_dict['_type']!='val_epoch' and log_dict['epoch']!='20/20':
                                 print('Something wrong with log at {}'.format(curr_path))
                             else:
