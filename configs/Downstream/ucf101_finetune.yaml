@@ -33,7 +33,7 @@ MODEL:
   ARCH: vit
   LOSS_FUNC: cross_entropy
   DROPOUT_RATE: 0.5
-  PRETRAINED: true
+  PRETRAINED: false
 TEST:
   ENABLE: True
   DATASET: kinetics
