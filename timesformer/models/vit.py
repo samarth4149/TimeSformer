@@ -142,7 +142,7 @@ class Block(nn.Module):
                 cls_token = res[:,0,:].unsqueeze(1)
                 res = rearrange(res[:, 1:, :], 'b (h w t) m -> b h w t m', b=B, h=H, w=W, t=T)
                 # 3. Apply 3d conv
-                res = self.std_conv3d(res)
+                res = self.sta_conv3d(res)
                 # 4. Reshape to (B, H*W*T, C) and add back cls token
                 res = rearrange(res, 'b h w t m -> b (h w t) m', b=B, h=H, w=W, t=T)
                 res = torch.cat([cls_token, res], dim=1)
