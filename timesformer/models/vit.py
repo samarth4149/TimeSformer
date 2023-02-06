@@ -151,6 +151,7 @@ class Block(nn.Module):
                 # 6. Multiply with W_up
                 res = self.stadapter_w_up(res)
                 x = x + res
+                xt = x[:,1:,:] # name xt not quite apt, just using to resuse code below 
             else:
                 ## Temporal
                 xt = x[:,1:,:]
