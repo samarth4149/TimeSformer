@@ -98,7 +98,7 @@ class Block(nn.Module):
         super().__init__()
         self.attention_type = attention_type
         self.st_adapter = st_adapter
-        self.act_layer = act_layer
+        self.act = act_layer()
         assert(attention_type in ['divided_space_time', 'space_only','joint_space_time'])
 
         self.norm1 = norm_layer(dim)
@@ -147,7 +147,7 @@ class Block(nn.Module):
                 res = rearrange(res, 'b m h w t -> b (h w t) m', b=B, h=H, w=W, t=T)
                 res = torch.cat([cls_token, res], dim=1)
                 # 5. Apply GeLU
-                res = self.act_layer(res)
+                res = self.act(res)
                 # 6. Multiply with W_up
                 res = self.stadapter_w_up(res)
                 x = x + res
