@@ -443,6 +443,12 @@ def train(cfg):
                 param.requires_grad = False
         model.module.model.head.weight.requires_grad = True
         model.module.model.head.bias.requires_grad = True
+    elif cfg.MODEL.ST_ADAPTER_ONLY_FT:
+        for name, param in model.named_parameters():
+            if param.requires_grad and 'stadapter' not in name:
+                param.requires_grad = False
+        model.module.model.head.weight.requires_grad = True
+        model.module.model.head.bias.requires_grad = True
 
     # Create the video train and val loaders.
     train_loader = loader.construct_loader(cfg, "train")

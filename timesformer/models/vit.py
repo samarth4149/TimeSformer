@@ -115,9 +115,9 @@ class Block(nn.Module):
               dim, num_heads=num_heads, qkv_bias=qkv_bias, qk_scale=qk_scale, attn_drop=attn_drop, proj_drop=drop)
             self.temporal_fc = nn.Linear(dim, dim)
             if self.st_adapter:
-                self.sta_w_down = nn.Linear(dim, sta_dim)
-                self.sta_conv3d = nn.Conv3d(sta_dim, sta_dim, kernel_size=(1, 1, 3), padding=(0, 0, 1))
-                self.sta_w_up = nn.Linear(sta_dim, dim)
+                self.stadapter_w_down = nn.Linear(dim, sta_dim)
+                self.stadapter_conv3d = nn.Conv3d(sta_dim, sta_dim, kernel_size=(1, 1, 3), padding=(0, 0, 1))
+                self.stadapter_w_up = nn.Linear(sta_dim, dim)
 
         ## drop path
         self.drop_path = DropPath(drop_path) if drop_path > 0. else nn.Identity()
@@ -137,19 +137,19 @@ class Block(nn.Module):
         elif self.attention_type == 'divided_space_time':
             if self.st_adapter:
                 # 1. Multiply all tokens with W_down
-                res = self.sta_w_down(x)
+                res = self.stadapter_w_down(x)
                 # 2. Remove cls token and reshape to (B, C, H, W, T)
                 cls_token = res[:,0,:].unsqueeze(1)
                 res = rearrange(res[:, 1:, :], 'b (h w t) m -> b m h w t', b=B, h=H, w=W, t=T)
                 # 3. Apply 3d conv
-                res = self.sta_conv3d(res)
+                res = self.stadapter_conv3d(res)
                 # 4. Reshape to (B, H*W*T, C) and add back cls token
                 res = rearrange(res, 'b m h w t -> b (h w t) m', b=B, h=H, w=W, t=T)
                 res = torch.cat([cls_token, res], dim=1)
                 # 5. Apply GeLU
                 res = self.act_layer(res)
                 # 6. Multiply with W_up
-                res = self.sta_w_up(res)
+                res = self.stadapter_w_up(res)
                 x = x + res
             else:
                 ## Temporal

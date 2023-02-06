@@ -241,6 +241,9 @@ _C.MODEL.LIN_PROBE = False
 # Whether to finetune only temporal attention
 _C.MODEL.TATT_ONLY_FT = False
 
+# Whether to finetune only ST Adapter
+_C.MODEL.ST_ADAPTER_ONLY_FT = False
+
 # -----------------------------------------------------------------------------
 # SlowFast options
 # -----------------------------------------------------------------------------
