@@ -93,27 +93,37 @@ class Attention(nn.Module):
 class Block(nn.Module):
 
     def __init__(self, dim, num_heads, mlp_ratio=4., qkv_bias=False, qk_scale=None, drop=0., attn_drop=0.,
-                 drop_path=0.1, act_layer=nn.GELU, norm_layer=nn.LayerNorm, attention_type='divided_space_time'):
+                 drop_path=0.1, act_layer=nn.GELU, norm_layer=nn.LayerNorm, attention_type='divided_space_time',
+                 st_adapter=False, sta_dim=384):
         super().__init__()
         self.attention_type = attention_type
+        self.st_adapter = st_adapter
+        self.act_layer = act_layer
         assert(attention_type in ['divided_space_time', 'space_only','joint_space_time'])
 
         self.norm1 = norm_layer(dim)
         self.attn = Attention(
            dim, num_heads=num_heads, qkv_bias=qkv_bias, qk_scale=qk_scale, attn_drop=attn_drop, proj_drop=drop)
 
+        assert (not self.st_adapter) or (self.attention_type == 'divided_space_time'), \
+            'st_adapter can only be used when attention_type is \'divided_space_time\''
+        
         ## Temporal Attention Parameters
         if self.attention_type == 'divided_space_time':
             self.temporal_norm1 = norm_layer(dim)
             self.temporal_attn = Attention(
               dim, num_heads=num_heads, qkv_bias=qkv_bias, qk_scale=qk_scale, attn_drop=attn_drop, proj_drop=drop)
             self.temporal_fc = nn.Linear(dim, dim)
+            if self.st_adapter:
+                self.sta_w_down = nn.Linear(dim, sta_dim)
+                self.sta_conv3d = nn.Conv3d(sta_dim, sta_dim, kernel_size=(1, 1, 3), padding=(0, 0, 1))
+                self.sta_w_up = nn.Linear(sta_dim, dim)
 
         ## drop path
         self.drop_path = DropPath(drop_path) if drop_path > 0. else nn.Identity()
         self.norm2 = norm_layer(dim)
         mlp_hidden_dim = int(dim * mlp_ratio)
-        self.mlp = Mlp(in_features=dim, hidden_features=mlp_hidden_dim, act_layer=act_layer, drop=drop)
+        self.mlp = Mlp(in_features=dim, hidden_features=mlp_hidden_dim, act_layer=act_layer, drop=drop)        
 
 
     def forward(self, x, B, T, W):
@@ -125,13 +135,30 @@ class Block(nn.Module):
             x = x + self.drop_path(self.mlp(self.norm2(x)))
             return x
         elif self.attention_type == 'divided_space_time':
-            ## Temporal
-            xt = x[:,1:,:]
-            xt = rearrange(xt, 'b (h w t) m -> (b h w) t m',b=B,h=H,w=W,t=T)
-            res_temporal = self.drop_path(self.temporal_attn(self.temporal_norm1(xt)))
-            res_temporal = rearrange(res_temporal, '(b h w) t m -> b (h w t) m',b=B,h=H,w=W,t=T)
-            res_temporal = self.temporal_fc(res_temporal)
-            xt = x[:,1:,:] + res_temporal
+            if self.st_adapter:
+                # 1. Multiply all tokens with W_down
+                res = self.sta_w_down(x)
+                # 2. Remove cls token and reshape to (B, H, W, T, C)
+                cls_token = res[:,0,:].unsqueeze(1)
+                res = rearrange(res[:, 1:, :], 'b (h w t) m -> b h w t m', b=B, h=H, w=W, t=T)
+                # 3. Apply 3d conv
+                res = self.std_conv3d(res)
+                # 4. Reshape to (B, H*W*T, C) and add back cls token
+                res = rearrange(res, 'b h w t m -> b (h w t) m', b=B, h=H, w=W, t=T)
+                res = torch.cat([cls_token, res], dim=1)
+                # 5. Apply GeLU
+                res = self.act_layer(res)
+                # 6. Multiply with W_up
+                res = self.sta_w_up(res)
+                x = x + res
+            else:
+                ## Temporal
+                xt = x[:,1:,:]
+                xt = rearrange(xt, 'b (h w t) m -> (b h w) t m',b=B,h=H,w=W,t=T)
+                res_temporal = self.drop_path(self.temporal_attn(self.temporal_norm1(xt)))
+                res_temporal = rearrange(res_temporal, '(b h w) t m -> b (h w t) m',b=B,h=H,w=W,t=T)
+                res_temporal = self.temporal_fc(res_temporal)
+                xt = x[:,1:,:] + res_temporal
 
             ## Spatial
             init_cls_token = x[:,0,:].unsqueeze(1)
@@ -184,7 +211,7 @@ class VisionTransformer(nn.Module):
     """
     def __init__(self, img_size=224, patch_size=16, in_chans=3, num_classes=1000, embed_dim=768, depth=12,
                  num_heads=12, mlp_ratio=4., qkv_bias=False, qk_scale=None, drop_rate=0., attn_drop_rate=0.,
-                 drop_path_rate=0.1, hybrid_backbone=None, norm_layer=nn.LayerNorm, num_frames=8, attention_type='divided_space_time', dropout=0.):
+                 drop_path_rate=0.1, hybrid_backbone=None, norm_layer=nn.LayerNorm, num_frames=8, attention_type='divided_space_time', dropout=0., st_adapter=False, st_adapter_dim=384):
         super().__init__()
         self.attention_type = attention_type
         self.depth = depth
@@ -208,7 +235,7 @@ class VisionTransformer(nn.Module):
         self.blocks = nn.ModuleList([
             Block(
                 dim=embed_dim, num_heads=num_heads, mlp_ratio=mlp_ratio, qkv_bias=qkv_bias, qk_scale=qk_scale,
-                drop=drop_rate, attn_drop=attn_drop_rate, drop_path=dpr[i], norm_layer=norm_layer, attention_type=self.attention_type)
+                drop=drop_rate, attn_drop=attn_drop_rate, drop_path=dpr[i], norm_layer=norm_layer, attention_type=self.attention_type, st_adapter=st_adapter, sta_dim=st_adapter_dim)
             for i in range(self.depth)])
         self.norm = norm_layer(embed_dim)
 
@@ -325,7 +352,7 @@ class vit_small_patch16_224(nn.Module):
         super(vit_small_patch16_224, self).__init__()
         self.pretrained=cfg.MODEL.PRETRAINED
         patch_size = 16
-        self.model = VisionTransformer(img_size=cfg.DATA.TRAIN_CROP_SIZE, num_classes=cfg.MODEL.NUM_CLASSES, patch_size=patch_size, embed_dim=384, depth=12, num_heads=6, mlp_ratio=4, qkv_bias=True, norm_layer=partial(nn.LayerNorm, eps=1e-6), drop_rate=0., attn_drop_rate=0., drop_path_rate=0.1, num_frames=cfg.DATA.NUM_FRAMES, attention_type=cfg.TIMESFORMER.ATTENTION_TYPE, **kwargs)
+        self.model = VisionTransformer(img_size=cfg.DATA.TRAIN_CROP_SIZE, num_classes=cfg.MODEL.NUM_CLASSES, patch_size=patch_size, embed_dim=384, depth=12, num_heads=6, mlp_ratio=4, qkv_bias=True, norm_layer=partial(nn.LayerNorm, eps=1e-6), drop_rate=0., attn_drop_rate=0., drop_path_rate=0.1, num_frames=cfg.DATA.NUM_FRAMES, attention_type=cfg.TIMESFORMER.ATTENTION_TYPE, st_adapter=cfg.TIMESFORMER.ST_ADAPTER, st_adapter_dim=cfg.TIMESFORMER.ST_ADAPTER_DIM, **kwargs)
 
         self.attention_type = cfg.TIMESFORMER.ATTENTION_TYPE
         self.model.default_cfg = default_cfgs['vit_small_patch16_224']
@@ -344,7 +371,7 @@ class vit_base_patch16_224(nn.Module):
         super(vit_base_patch16_224, self).__init__()
         self.pretrained=cfg.MODEL.PRETRAINED
         patch_size = 16
-        self.model = VisionTransformer(img_size=cfg.DATA.TRAIN_CROP_SIZE, num_classes=cfg.MODEL.NUM_CLASSES, patch_size=patch_size, embed_dim=768, depth=12, num_heads=12, mlp_ratio=4, qkv_bias=True, norm_layer=partial(nn.LayerNorm, eps=1e-6), drop_rate=0., attn_drop_rate=0., drop_path_rate=0.1, num_frames=cfg.DATA.NUM_FRAMES, attention_type=cfg.TIMESFORMER.ATTENTION_TYPE, **kwargs)
+        self.model = VisionTransformer(img_size=cfg.DATA.TRAIN_CROP_SIZE, num_classes=cfg.MODEL.NUM_CLASSES, patch_size=patch_size, embed_dim=768, depth=12, num_heads=12, mlp_ratio=4, qkv_bias=True, norm_layer=partial(nn.LayerNorm, eps=1e-6), drop_rate=0., attn_drop_rate=0., drop_path_rate=0.1, num_frames=cfg.DATA.NUM_FRAMES, attention_type=cfg.TIMESFORMER.ATTENTION_TYPE, st_adapter=cfg.TIMESFORMER.ST_ADAPTER, st_adapter_dim=cfg.TIMESFORMER.ST_ADAPTER_DIM, **kwargs)
 
         self.attention_type = cfg.TIMESFORMER.ATTENTION_TYPE
         self.model.default_cfg = default_cfgs['vit_base_patch16_224']
