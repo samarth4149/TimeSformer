@@ -138,13 +138,13 @@ class Block(nn.Module):
             if self.st_adapter:
                 # 1. Multiply all tokens with W_down
                 res = self.sta_w_down(x)
-                # 2. Remove cls token and reshape to (B, H, W, T, C)
+                # 2. Remove cls token and reshape to (B, C, H, W, T)
                 cls_token = res[:,0,:].unsqueeze(1)
-                res = rearrange(res[:, 1:, :], 'b (h w t) m -> b h w t m', b=B, h=H, w=W, t=T)
+                res = rearrange(res[:, 1:, :], 'b (h w t) m -> b m h w t', b=B, h=H, w=W, t=T)
                 # 3. Apply 3d conv
                 res = self.sta_conv3d(res)
                 # 4. Reshape to (B, H*W*T, C) and add back cls token
-                res = rearrange(res, 'b h w t m -> b (h w t) m', b=B, h=H, w=W, t=T)
+                res = rearrange(res, 'b m h w t -> b (h w t) m', b=B, h=H, w=W, t=T)
                 res = torch.cat([cls_token, res], dim=1)
                 # 5. Apply GeLU
                 res = self.act_layer(res)
