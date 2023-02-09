@@ -364,6 +364,9 @@ _C.SOLVER = CfgNode()
 # Base learning rate.
 _C.SOLVER.BASE_LR = 0.1
 
+# Base learning rate of fc head (if different from backbone)
+_C.SOLVER.HEAD_LR_FACTOR = 1.0
+
 # Learning rate policy (see utils/lr_policy.py for options and examples).
 _C.SOLVER.LR_POLICY = "cosine"
 

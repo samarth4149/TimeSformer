@@ -26,9 +26,13 @@ def construct_optimizer(model, cfg):
     bn_params = []
     # Non-batchnorm parameters.
     non_bn_parameters = []
+    # fc parameters
+    head_params = []
     for name, p in model.named_parameters():
         if "bn" in name:
             bn_params.append(p)
+        elif "head" in name:
+            head_params.append(p)
         else:
             non_bn_parameters.append(p)
     # Apply different weight decay to Batchnorm and non-batchnorm parameters.
@@ -36,13 +40,13 @@ def construct_optimizer(model, cfg):
     # Having a different weight decay on batchnorm might cause a performance
     # drop.
     optim_params = [
-        {"params": bn_params, "weight_decay": cfg.BN.WEIGHT_DECAY},
-        {"params": non_bn_parameters, "weight_decay": cfg.SOLVER.WEIGHT_DECAY},
+        {"params": bn_params, "weight_decay": cfg.BN.WEIGHT_DECAY, "lr": cfg.SOLVER.BASE_LR},
+        {"params": non_bn_parameters, "weight_decay": cfg.SOLVER.WEIGHT_DECAY, "lr": cfg.SOLVER.BASE_LR},
+        {"params": head_params, "weight_decay": cfg.SOLVER.WEIGHT_DECAY, "lr": cfg.SOLVER.BASE_LR * cfg.SOLVER.HEAD_LR_FACTOR}
     ]
     # Check all parameters will be passed into optimizer.
-    assert len(list(model.parameters())) == len(non_bn_parameters) + len(
-        bn_params
-    ), "parameter size does not match: {} + {} != {}".format(
+    assert len(list(model.parameters())) == len(non_bn_parameters) + len(bn_params) + len(head_params), \
+        "parameter size does not match: {} + {} != {}".format(
         len(non_bn_parameters), len(bn_params), len(list(model.parameters()))
     )
 
