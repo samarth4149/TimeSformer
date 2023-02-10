@@ -416,7 +416,7 @@ def train(cfg):
     # Construct the optimizer.
     optimizer = optim.construct_optimizer(model, cfg)
 
-    # TODO : first time on launching job FINETUNE should be true and then become false on resubmit
+    # first time on launching job FINETUNE should be true and then become false on resubmit
     # Load a checkpoint to resume training if applicable.
     if not cfg.TRAIN.FINETUNE:
       start_epoch = cu.load_train_checkpoint(cfg, model, optimizer)

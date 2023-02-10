@@ -32,7 +32,7 @@ if __name__ == '__main__':
                                     if log_dict['_type']!='val_epoch' and log_dict['epoch']!='20/20':
                                         print('Something wrong with log at {}'.format(curr_path))
                                     else:
-                                        df.loc[(p, m), d] = 100. - float(log_dict['top1_err'])
+                                        df.loc[(p, m, b, h), d] = 100. - float(log_dict['top1_err'])
                                     break                            
 
                 df.to_csv(f'expts/downstream/hp_tune/from_{p}/{d}_{m}/hp_results.csv')

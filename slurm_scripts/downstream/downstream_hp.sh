@@ -11,7 +11,7 @@ do
                 base_lr_str=$(printf "%.0e\n" $base_lr) 
                 head_factor_str=$(printf "%.0e\n" $head_factor) 
                 JOB_NAME=${backbone_dir}_${dset}_finetune_base_lr_${base_lr_str}_head_factor_${head_factor_str}
-                python tools/submit.py --cfg configs/Downstream/${dset}_finetune.yaml --job_dir expts/downstream/hp_tune/from_${backbone_dir}/${dset}_finetune/base_lr_${base_lr_str}_head_factor_${head_factor_str}  --num_shards 2 --num_gpus 4 --name ${JOB_NAME} SOLVER.BASE_LR ${base_lr} SOLVER.HEAD_LR_FACTOR ${head_factor} MODEL.MODEL_NAME vit_small_patch16_224 TRAIN.CHECKPOINT_FILE_PATH /gpfs/u/home/DPLD/DPLDsmms/scratch/projects/TimeSformer/expts/${backbone_dir}/checkpoints/checkpoint_epoch_00075.pyth
+                python tools/submit.py --cfg configs/Downstream/${dset}_finetune.yaml --job_dir expts/downstream/hp_tune/from_${backbone_dir}/${dset}_finetune/base_lr_${base_lr_str}_head_factor_${head_factor_str}  --num_shards 2 --num_gpus 4 --name ${JOB_NAME} MODEL.MODEL_NAME vit_small_patch16_224 TRAIN.CHECKPOINT_FILE_PATH /gpfs/u/home/DPLD/DPLDsmms/scratch/projects/TimeSformer/expts/${backbone_dir}/checkpoints/checkpoint_epoch_00075.pyth SOLVER.BASE_LR ${base_lr} SOLVER.HEAD_LR_FACTOR ${head_factor}
 
                 # JOB_NAME=${backbone_dir}_${dset}_lin_probe
                 # python tools/submit.py --cfg configs/Downstream/${dset}_lin_probe.yaml --job_dir  expts/downstream/from_${backbone_dir}/${JOB_NAME}/  --num_shards 2 --num_gpus 4 --name ${JOB_NAME} MODEL.MODEL_NAME vit_small_patch16_224 TRAIN.CHECKPOINT_FILE_PATH /gpfs/u/home/DPLD/DPLDsmms/scratch/projects/TimeSformer/expts/${backbone_dir}/checkpoints/checkpoint_epoch_00075.pyth;
