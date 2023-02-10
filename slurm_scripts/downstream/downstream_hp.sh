@@ -6,7 +6,7 @@ do
     do
         for base_lr in 0.001 0.0003 0.0001;
         do
-            for head_factor in 1. 10.;
+            for head_factor in 10.;
             do
                 base_lr_str=$(printf "%.0e\n" $base_lr) 
                 head_factor_str=$(printf "%.0e\n" $head_factor) 
