@@ -18,7 +18,7 @@ if __name__ == '__main__':
         for m in downstream_modes:
             for d in downstream_datasets:
                 for b in base_lrs:
-                    for h in h:
+                    for h in head_factors:
                         curr_path = f'expts/downstream/hp_tune/from_{p}/{d}_{m}/base_lr_{b:.0e}_head_factor{h:.0e}/stdout.log'
                         with open(curr_path, 'r') as f:
                             lines = f.read().splitlines()
