@@ -150,7 +150,9 @@ def del_checkpoint(path_to_job, epoch, cfg):
         return
     # Write the checkpoint.
     path_to_checkpoint = get_path_to_checkpoint(path_to_job, epoch + 1)
-    shutil.rmtree(path_to_checkpoint)
+    if os.path.exists(path_to_checkpoint):
+        print('Removing checkpoint: ', path_to_checkpoint)
+        os.remove(path_to_checkpoint)
     return path_to_checkpoint
 
 
