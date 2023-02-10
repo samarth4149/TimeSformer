@@ -424,7 +424,7 @@ def train(cfg):
       start_epoch = cu.load_train_checkpoint(cfg, model, optimizer)
     else:
       start_epoch = 0
-      cu.load_checkpoint(cfg.TRAIN.CHECKPOINT_FILE_PATH, model)
+      cu.load_checkpoint(cfg.TRAIN.CHECKPOINT_FILE_PATH, model, clear_name_pattern=cfg.TRAIN.CLEAR_NAME_PATTERN)
 
     if cfg.MODEL.LIN_PROBE:
         # pre_params = []
