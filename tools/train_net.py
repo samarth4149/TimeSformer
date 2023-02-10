@@ -71,7 +71,7 @@ def train_epoch(
         lr = optim.get_epoch_lr(cur_epoch + float(cur_iter) / data_size, cfg)
         optim.set_lr(optimizer, lr)
         # NOTE: LR factor for head. Just setting using above line breaks the head lr factor.
-        optimizer.param_groups[-1]['lr'] *= cfg.TRAIN.HEAD_LR_FACTOR
+        optimizer.param_groups[-1]['lr'] *= cfg.SOLVER.HEAD_LR_FACTOR
 
         train_meter.data_toc()
 
