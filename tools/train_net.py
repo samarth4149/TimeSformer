@@ -533,7 +533,7 @@ def train(cfg):
         # Save a checkpoint.
         if is_checkp_epoch:
             cu.save_checkpoint(cfg.OUTPUT_DIR, model, optimizer, cur_epoch, cfg)
-            if cfg.TRAIN.DEL_INTERMIDIATE_CHECKPOINTS:
+            if cfg.TRAIN.DEL_INTERMEDIATE_CHECKPOINTS:
                 try:
                     cu.del_checkpoint(cfg.OUTPUT_DIR, cur_epoch-1, cfg)
                 except:
