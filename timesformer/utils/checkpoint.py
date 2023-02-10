@@ -8,6 +8,7 @@ import os
 import pickle
 from collections import OrderedDict
 import torch
+import shutil
 from fvcore.common.file_io import PathManager
 
 import timesformer.utils.distributed as du
@@ -133,6 +134,23 @@ def save_checkpoint(path_to_job, model, optimizer, epoch, cfg):
     path_to_checkpoint = get_path_to_checkpoint(path_to_job, epoch + 1)
     with PathManager.open(path_to_checkpoint, "wb") as f:
         torch.save(checkpoint, f)
+    return path_to_checkpoint
+
+def del_checkpoint(path_to_job, epoch, cfg):
+    """
+    Delete a checkpoint (typically for a previous checkpoint).
+    Args:
+        model (model): model to save the weight to the checkpoint.
+        optimizer (optim): optimizer to save the historical state.
+        epoch (int): current number of epoch of the model.
+        cfg (CfgNode): configs to save.
+    """
+    # Save checkpoints only from the master process.
+    if not du.is_master_proc(cfg.NUM_GPUS * cfg.NUM_SHARDS):
+        return
+    # Write the checkpoint.
+    path_to_checkpoint = get_path_to_checkpoint(path_to_job, epoch + 1)
+    shutil.rmtree(path_to_checkpoint)
     return path_to_checkpoint
 
 

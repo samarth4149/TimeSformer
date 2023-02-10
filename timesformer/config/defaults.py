@@ -74,6 +74,8 @@ _C.TRAIN.CHECKPOINT_EPOCH_RESET = False
 # If set, clear all layer names according to the pattern provided.
 _C.TRAIN.CHECKPOINT_CLEAR_NAME_PATTERN = ()  # ("backbone.",)
 
+# If set, clear intermediate checkpoints
+_C.TRAIN.DEL_INTERMEDIATE_CHECKPOINTS = True
 # ---------------------------------------------------------------------------- #
 # Testing options
 # ---------------------------------------------------------------------------- #

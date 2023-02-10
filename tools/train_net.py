@@ -533,6 +533,11 @@ def train(cfg):
         # Save a checkpoint.
         if is_checkp_epoch:
             cu.save_checkpoint(cfg.OUTPUT_DIR, model, optimizer, cur_epoch, cfg)
+            if cfg.TRAIN.DEL_INTERMIDIATE_CHECKPOINTS:
+                try:
+                    cu.del_checkpoint(cfg.OUTPUT_DIR, cur_epoch-1, cfg)
+                except:
+                    pass
         # Evaluate the model on validation set.
         if is_eval_epoch:
             eval_epoch(val_loader, model, val_meter, cur_epoch, cfg, writer)
