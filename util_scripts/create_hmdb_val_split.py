@@ -26,13 +26,13 @@ if __name__ == '__main__':
     for cl in np.unique(tr_labels):
         cl_files = tr_files[tr_labels==cl]
         cl_files = RNG.permutation(cl_files)
-        val_files = cl_files[:int(val_prop*len(cl_files))]
-        tr_files = cl_files[int(val_prop*len(cl_files)):]
+        curr_val_files = cl_files[:int(val_prop*len(cl_files))]
+        curr_tr_files = cl_files[int(val_prop*len(cl_files)):]
         with open(df_path_new / 'train.csv', 'a+') as f:
             writer = csv.writer(f, delimiter=separator)
-            for file in tr_files:
+            for file in curr_tr_files:
                 writer.writerow([file, cl])
         with open(df_path_new / 'val.csv', 'a+') as f:
             writer = csv.writer(f, delimiter=separator)
-            for file in val_files:
+            for file in curr_val_files:
                 writer.writerow([file, cl])
