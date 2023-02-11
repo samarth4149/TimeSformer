@@ -11,6 +11,7 @@ if __name__ == '__main__':
     df_path_new.mkdir(exist_ok=True)
     separator = ' '
     val_prop = 0.2
+    RNG = np.random.RandomState(44)
     
     tr_files = []
     tr_labels = []
@@ -24,7 +25,7 @@ if __name__ == '__main__':
 
     for cl in np.unique(tr_labels):
         cl_files = tr_files[tr_labels==cl]
-        cl_files = np.random.permutation(cl_files)
+        cl_files = RNG.permutation(cl_files)
         val_files = cl_files[:int(val_prop*len(cl_files))]
         tr_files = cl_files[int(val_prop*len(cl_files)):]
         with open(df_path_new / 'train.csv', 'a+') as f:
