@@ -12,7 +12,7 @@ if __name__ == '__main__':
     downstream_modes = ['linprobe']
     base_lrs = [1.e-3, 3.e-4, 1.e-4]
     # head_factors = [1., 10.]
-    df = pd.DataFrame(columns=downstream_datasets, index=pd.MultiIndex.from_product([pt_methods, downstream_modes, base_lrs], names=['pt_method', 'mode', 'base_lr', 'head_factor']))
+    df = pd.DataFrame(columns=downstream_datasets, index=pd.MultiIndex.from_product([pt_methods, downstream_modes, base_lrs], names=['pt_method', 'mode', 'base_lr']))
     
     for p in pt_methods:
         for m in downstream_modes:
