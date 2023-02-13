@@ -12,11 +12,11 @@ if __name__ == '__main__':
     downstream_modes = ['linprobe']
     base_lrs = [1.e-3, 3.e-4, 1.e-4]
     # head_factors = [1., 10.]
-    df = pd.DataFrame(columns=downstream_datasets, index=pd.MultiIndex.from_product([pt_methods, downstream_modes, base_lrs], names=['pt_method', 'mode', 'base_lr']))
     
     for p in pt_methods:
         for m in downstream_modes:
             for d in downstream_datasets:
+                df = pd.DataFrame(columns=downstream_datasets, index=pd.MultiIndex.from_product([pt_methods, downstream_modes, base_lrs], names=['pt_method', 'mode', 'base_lr']))
                 for b in [0.01, 0.003, 0.001, 0.0003, 0.0001]:
                     # for h in head_factors:
                     curr_path = f'expts/downstream/hp_tune/from_{p}/{d}_{m}/base_lr_{b:.0e}/stdout.log'
