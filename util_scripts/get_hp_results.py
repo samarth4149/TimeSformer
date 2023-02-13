@@ -10,7 +10,7 @@ if __name__ == '__main__':
     downstream_datasets = ['hmdb51']
     pt_methods = ['MiniSynthetic_vit_s_pass_dino_pt', 'MiniSynthetic_vit_s_pass_dino_pt_tatt_only_ft']
     downstream_modes = ['linprobe']
-    base_lrs = [1.e-3, 3.e-4, 1.e-4]
+    base_lrs = [0.01, 0.003, 0.001, 0.0003, 0.0001, 3.e-5, 1.e-5, 3.e-6, 1.e-6]
     # head_factors = [1., 10.]
     
     for p in pt_methods:
@@ -18,7 +18,8 @@ if __name__ == '__main__':
             for d in downstream_datasets:
                 # df = pd.DataFrame(columns=downstream_datasets, index=pd.MultiIndex.from_product([base_lrs], names=['base_lr']))
                 df = pd.DataFrame(columns=downstream_datasets, index=base_lrs)
-                for b in [0.01, 0.003, 0.001, 0.0003, 0.0001]:
+                df.index.name = 'base_lr'
+                for b in base_lrs:
                     # for h in head_factors:
                     curr_path = f'expts/downstream/hp_tune/from_{p}/{d}_{m}/base_lr_{b:.0e}/stdout.log'
                     with open(curr_path, 'r') as f:
