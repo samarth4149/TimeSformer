@@ -4,7 +4,7 @@ do
     # for dset in ucf101 uav ikea_furniture diving48 hmdb51 mini_ssv2;
     for dset in hmdb51;
     do
-        for base_lr in 1.e-2 3.e-3 1.e-3 3.e-4 1.e-4 3.e-5 1.e-5 3.e-6 1.e-6;
+        for base_lr in 3.e-1 1.e-1 3.e-2;
         # do
         #     for head_factor in 10.;
         do
