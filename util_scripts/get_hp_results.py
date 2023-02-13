@@ -16,7 +16,8 @@ if __name__ == '__main__':
     for p in pt_methods:
         for m in downstream_modes:
             for d in downstream_datasets:
-                df = pd.DataFrame(columns=downstream_datasets, index=pd.MultiIndex.from_product([pt_methods, downstream_modes, base_lrs], names=['pt_method', 'mode', 'base_lr']))
+                # df = pd.DataFrame(columns=downstream_datasets, index=pd.MultiIndex.from_product([base_lrs], names=['base_lr']))
+                df = pd.DataFrame(columns=downstream_datasets, index=base_lrs)
                 for b in [0.01, 0.003, 0.001, 0.0003, 0.0001]:
                     # for h in head_factors:
                     curr_path = f'expts/downstream/hp_tune/from_{p}/{d}_{m}/base_lr_{b:.0e}/stdout.log'
@@ -32,7 +33,7 @@ if __name__ == '__main__':
                                 if log_dict['_type']!='val_epoch' and log_dict['epoch']!='20/20':
                                     print('Something wrong with log at {}'.format(curr_path))
                                 else:
-                                    df.loc[(p, m, b), d] = 100. - float(log_dict['top1_err'])
+                                    df.loc[b, d] = 100. - float(log_dict['top1_err'])
                                 break                            
 
                 df.to_csv(f'expts/downstream/hp_tune/from_{p}/{d}_{m}/hp_results.csv')
