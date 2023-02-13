@@ -22,7 +22,7 @@ if __name__ == '__main__':
                 # df.index.name = 'base_lr'
                 for b in base_lrs:
                     for h in head_factors:
-                        curr_path = f'expts/downstream/hp_tune/from_{p}/{d}_{m}/base_lr_{b:.0e}/stdout.log'
+                        curr_path = f'expts/downstream/hp_tune/from_{p}/{d}_{m}/base_lr_{b:.0e}_head_factor_{h:.0e}/stdout.log'
                         with open(curr_path, 'r') as f:
                             lines = f.read().splitlines()
                             for l in lines[::-1]:
@@ -35,7 +35,7 @@ if __name__ == '__main__':
                                     if log_dict['_type']!='val_epoch' and log_dict['epoch']!='20/20':
                                         print('Something wrong with log at {}'.format(curr_path))
                                     else:
-                                        df.loc[b, d] = 100. - float(log_dict['top1_err'])
+                                        df.loc[(b, h), d] = 100. - float(log_dict['top1_err'])
                                     break                            
 
                 df.to_csv(f'expts/downstream/hp_tune/from_{p}/{d}_{m}/hp_results.csv')
