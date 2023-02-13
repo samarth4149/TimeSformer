@@ -10,7 +10,7 @@ if __name__ == '__main__':
     downstream_datasets = ['hmdb51']
     pt_methods = ['MiniSynthetic_vit_s_pass_dino_pt', 'MiniSynthetic_vit_s_pass_dino_pt_tatt_only_ft']
     downstream_modes = ['linprobe']
-    base_lrs = [0.01, 0.003, 0.001, 0.0003, 0.0001, 3.e-5, 1.e-5, 3.e-6, 1.e-6]
+    base_lrs = [0.3, 0.1, 0.03, 0.01, 0.003, 0.001, 0.0003, 0.0001, 3.e-5, 1.e-5, 3.e-6, 1.e-6]
     # head_factors = [1., 10.]
     
     for p in pt_methods:
