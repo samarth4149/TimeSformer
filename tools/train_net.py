@@ -425,7 +425,10 @@ def train(cfg):
     else:
       start_epoch = 0
       cu.load_checkpoint(cfg.TRAIN.CHECKPOINT_FILE_PATH, model)
-
+    try:
+        cur_model = model.module.model
+    except: #no wrapped in DataParallel
+        cur_model = model.model
     if cfg.MODEL.LIN_PROBE:
         # pre_params = []
         for param in model.parameters():
@@ -435,22 +438,22 @@ def train(cfg):
                 param.requires_grad = False
                 #param.grad = None
         # print('pre', pre_params[1])      
-        model.module.model.head.weight.requires_grad = True
-        model.module.model.head.bias.requires_grad = True
+        cur_model.head.weight.requires_grad = True
+        cur_model.head.bias.requires_grad = True
     elif cfg.MODEL.TATT_ONLY_FT:
         # Only temporal attention modules get updated 
         # along with the last linear layer.
         for name, param in model.named_parameters():
             if param.requires_grad and 'temporal' not in name:
                 param.requires_grad = False
-        model.module.model.head.weight.requires_grad = True
-        model.module.model.head.bias.requires_grad = True
+        cur_model.head.weight.requires_grad = True
+        cur_model.head.bias.requires_grad = True
     elif cfg.MODEL.ST_ADAPTER_ONLY_FT:
         for name, param in model.named_parameters():
             if param.requires_grad and 'stadapter' not in name:
                 param.requires_grad = False
-        model.module.model.head.weight.requires_grad = True
-        model.module.model.head.bias.requires_grad = True
+        cur_model.head.weight.requires_grad = True
+        cur_model.head.bias.requires_grad = True
 
     # Create the video train and val loaders.
     train_loader = loader.construct_loader(cfg, "train")
