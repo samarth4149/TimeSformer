@@ -14,13 +14,13 @@
 # python tools/submit.py --cfg configs/MiniSynthetic/TimeSformer_divST_8x32_224_pass_pt_tatt_only_ft.yaml --job_dir expts/${JOB_NAME}/ --num_shards 4 --num_gpus 4 --name ${JOB_NAME}
 
 JOB_NAME=MiniSynthetic_step3_pass_mae_pt_ft
-python tools/submit.py --cfg configs/MiniSynthetic/TimeSformer_divST_8x32_224_pass_pt.yaml --job_dir expts/${JOB_NAME}/ --num_shards 1 --num_gpus 4 --name ${JOB_NAME} DATA.NUM_FRAMES 16 MODEL.MODEL_NAME vit_base_patch16_224 TIMESFORMER.PRETRAINED_MODEL /gpfs/u/home/DPLD/DPLDhwrg/scratch/TimeSformer/ccc_models/mae_pass_400.pt TRAIN.BATCH_SIZE 16
+python tools/submit.py --cfg configs/MiniSynthetic/TimeSformer_divST_8x32_224_pass_pt.yaml --job_dir expts/step3/${JOB_NAME}/ --num_shards 1 --num_gpus 4 --name ${JOB_NAME} DATA.NUM_FRAMES 16 MODEL.MODEL_NAME vit_base_patch16_224 TIMESFORMER.PRETRAINED_MODEL /gpfs/u/home/DPLD/DPLDhwrg/scratch/TimeSformer/ccc_models/mae_pass_400.pt TRAIN.BATCH_SIZE 16
 
 JOB_NAME=MiniSynthetic_step3_pass_mae_pt_tatt_only_ft
-python tools/submit.py --cfg configs/MiniSynthetic/TimeSformer_divST_8x32_224_pass_pt_tatt_only_ft.yaml --job_dir expts/${JOB_NAME}/ --num_shards 1 --num_gpus 4 --name ${JOB_NAME} DATA.NUM_FRAMES 16 MODEL.MODEL_NAME vit_base_patch16_224 TIMESFORMER.PRETRAINED_MODEL /gpfs/u/home/DPLD/DPLDhwrg/scratch/TimeSformer/ccc_models/mae_pass_400.pt TRAIN.BATCH_SIZE 16
+python tools/submit.py --cfg configs/MiniSynthetic/TimeSformer_divST_8x32_224_pass_pt_tatt_only_ft.yaml --job_dir expts/step3//${JOB_NAME}/ --num_shards 1 --num_gpus 4 --name ${JOB_NAME} DATA.NUM_FRAMES 16 MODEL.MODEL_NAME vit_base_patch16_224 TIMESFORMER.PRETRAINED_MODEL /gpfs/u/home/DPLD/DPLDhwrg/scratch/TimeSformer/ccc_models/mae_pass_400.pt TRAIN.BATCH_SIZE 16
 
 JOB_NAME=MiniSynthetic_step3_pass_mae_pt_stadapter
-python tools/submit.py --cfg configs/MiniSynthetic/TimeSformer_divST_8x32_224_pass_pt_st_adapter.yaml --job_dir expts/${JOB_NAME}/ --num_shards 1 --num_gpus 4 --name ${JOB_NAME} DATA.NUM_FRAMES 16 MODEL.MODEL_NAME vit_base_patch16_224 TIMESFORMER.PRETRAINED_MODEL /gpfs/u/home/DPLD/DPLDhwrg/scratch/TimeSformer/ccc_models/mae_pass_400.pt TRAIN.BATCH_SIZE 16
+python tools/submit.py --cfg configs/MiniSynthetic/TimeSformer_divST_8x32_224_pass_pt_st_adapter.yaml --job_dir expts/step3//${JOB_NAME}/ --num_shards 1 --num_gpus 4 --name ${JOB_NAME} DATA.NUM_FRAMES 16 MODEL.MODEL_NAME vit_base_patch16_224 TIMESFORMER.PRETRAINED_MODEL /gpfs/u/home/DPLD/DPLDhwrg/scratch/TimeSformer/ccc_models/mae_pass_400.pt TRAIN.BATCH_SIZE 16
 
 # JOB_NAME=MiniSynthetic_vit_s_pass_dino_pt
 # python tools/submit.py --cfg configs/MiniSynthetic/TimeSformer_divST_8x32_224_pass_pt.yaml --job_dir expts/${JOB_NAME}/ --num_shards 4 --num_gpus 4 --name ${JOB_NAME}
