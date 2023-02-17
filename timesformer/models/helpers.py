@@ -112,7 +112,13 @@ def load_pretrained(model, cfg=None, num_classes=1000, in_chans=3, filter_fn=Non
        except:
          state_dict = load_state_dict(pretrained_model)
 
-
+    '''
+    for OmniMAE trained models, rename parameters by removing 'trunk'
+    '''
+    for k in list(state_dict.keys()):
+        if k[:6] == 'trunk.':
+            state_dict[k[6:]] = state_dict.pop(k)
+    
     if filter_fn is not None:
         state_dict = filter_fn(state_dict)
 
