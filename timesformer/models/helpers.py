@@ -118,7 +118,7 @@ def load_pretrained(model, cfg=None, num_classes=1000, in_chans=3, filter_fn=Non
     for k in list(state_dict.keys()):
         if k[:6] == 'trunk.':
             state_dict[k[6:]] = state_dict.pop(k)
-
+    
     if filter_fn is not None:
         state_dict = filter_fn(state_dict)
 
