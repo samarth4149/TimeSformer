@@ -7,7 +7,7 @@ import numpy as np
 
 if __name__ == '__main__':
     df_path_old = Path('data_files/hmdb51')
-    df_path_new = Path('data_files/hmdb51_new')
+    df_path_new = Path('data_files/hmdb51_val')
     df_path_new.mkdir(exist_ok=True)
     separator = ' '
     val_prop = 0.2
