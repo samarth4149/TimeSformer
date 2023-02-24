@@ -45,10 +45,12 @@ def run(
     # Initialize the process group.
     import os
     if 'RANK' in os.environ and 'WORLD_SIZE' in os.environ:
+        print('Distributed case 1')
         rank = int(os.environ["RANK"])
         world_size = int(os.environ['WORLD_SIZE'])
         local_rank = int(os.environ['LOCAL_RANK'])
     elif 'SLURM_PROCID' in os.environ:
+        print('Distributed case 2')
         # In case of slurm, args.world_size is set in run_with_submitit.py
         rank = int(os.environ['SLURM_PROCID'])
         world_size = num_proc * num_shards
