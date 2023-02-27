@@ -25,7 +25,7 @@ if __name__ == '__main__':
                 'TRAIN.CHECKPOINT_FILE_PATH', f'expts/step3/{b}/checkpoints/checkpoint_epoch_00075.pyth',
                 'TRAIN.BATCH_SIZE', '32',
                 'SOLVER.BASE_LR', str(best_lr)]
-            process = subprocess.Popen()
+            process = subprocess.Popen(proc_arr)
             process.wait()
     
     

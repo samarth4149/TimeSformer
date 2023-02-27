@@ -28,7 +28,7 @@ if __name__ == '__main__':
                     'SOLVER.BASE_LR', str(base_lr),
                     'TRAIN.BATCH_SIZE', '32',
                     'DATA.PATH_TO_DATA_DIR', f'/gpfs/u/home/DPLD/DPLDhwrg/scratch/TimeSformer/data_files/{d}_val']
-                process = subprocess.Popen()
+                process = subprocess.Popen(proc_arr)
                 process.wait()
     
     
