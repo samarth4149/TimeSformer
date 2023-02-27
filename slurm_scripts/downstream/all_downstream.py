@@ -12,11 +12,11 @@ if __name__ == '__main__':
     
     for b in backbones:
         for d in datasets:
-            job_name = f'{b}_{d}_linprobe'
+            job_name = f'{b}_{d}_lin_probe'
             best_lr = linprobe_results.loc[(b, slice(None)), d].idxmax()[1]
             proc_arr = [
                 'python', 'tools/submit.py', 
-                '--cfg', f'configs/Downstream/${d}_linprobe.yaml',
+                '--cfg', f'configs/Downstream/${d}_lin_probe.yaml',
                 '--job_dir', f'expts/downstream/from_{b}/{job_name}/',
                 '--num_shards' , '1',
                 '--num_gpus', '4',

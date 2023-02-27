@@ -24,7 +24,7 @@ if __name__ == '__main__':
                     '--num_gpus', '4',
                     '--name', job_name,
                     'MODEL.MODEL_NAME', 'vit_base_patch16_224',
-                    'TRAIN.CHECKPOINT_FILE_PATH', f'expts/downstream/hp_tune/from_{b}/{d}_lin_probe/base_lr_{best_lr}/checkpoints/checkpoint_epoch_00020.pyth',
+                    'TRAIN.CHECKPOINT_FILE_PATH', f'expts/downstream/hp_tune/from_{b}/{d}_linprobe/base_lr_{best_lr}/checkpoints/checkpoint_epoch_00020.pyth',
                     'SOLVER.BASE_LR', str(base_lr),
                     'TRAIN.BATCH_SIZE', '32',
                     'DATA.PATH_TO_DATA_DIR', f'/gpfs/u/home/DPLD/DPLDhwrg/scratch/TimeSformer/data_files/{d}_val']
