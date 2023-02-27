@@ -18,11 +18,12 @@ if __name__ == '__main__':
                 best_lr = linprobe_results.loc[(b, slice(None)), d].idxmax()[1]
                 proc_arr = [
                     'python', 'tools/submit.py', 
-                    '--cfg', f'configs/Downstream/${d}_finetune.yaml',
+                    '--cfg', f'configs/Downstream/{d}_finetune.yaml',
                     '--job_dir', f'expts/downstream/hp_tune/from_{b}/{d}_lpft/base_lr_{base_lr:.0e}/',
                     '--num_shards' , '1',
                     '--num_gpus', '4',
                     '--name', job_name,
+                    'DATA.NUM_FRAMES', '16',
                     'MODEL.MODEL_NAME', 'vit_base_patch16_224',
                     'TRAIN.CHECKPOINT_FILE_PATH', f'expts/downstream/hp_tune/from_{b}/{d}_linprobe/base_lr_{best_lr}/checkpoints/checkpoint_epoch_00020.pyth',
                     'SOLVER.BASE_LR', str(base_lr),

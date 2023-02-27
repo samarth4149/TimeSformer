@@ -16,11 +16,12 @@ if __name__ == '__main__':
             best_lr = linprobe_results.loc[(b, slice(None)), d].idxmax()[1]
             proc_arr = [
                 'python', 'tools/submit.py', 
-                '--cfg', f'configs/Downstream/${d}_lin_probe.yaml',
+                '--cfg', f'configs/Downstream/{d}_lin_probe.yaml',
                 '--job_dir', f'expts/downstream/from_{b}/{job_name}/',
                 '--num_shards' , '1',
                 '--num_gpus', '4',
                 '--name', job_name,
+                'DATA.NUM_FRAMES', '16',
                 'MODEL.MODEL_NAME', 'vit_base_patch16_224',
                 'TRAIN.CHECKPOINT_FILE_PATH', f'expts/step3/{b}/checkpoints/checkpoint_epoch_00075.pyth',
                 'TRAIN.BATCH_SIZE', '32',
