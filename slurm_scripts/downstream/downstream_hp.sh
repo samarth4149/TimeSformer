@@ -1,5 +1,5 @@
 # for backbone_dir in MiniSynthetic_vit_s_in1k_pt MiniSynthetic_vit_s_pass_dino_pt MiniSynthetic_vit_s_pass_dino_pt_tatt_only_ft MiniSynthetic_vit_s_scratch;
-for backbone_dir in MiniSynthetic_step3_k150inp_mae_stadapter;
+for backbone_dir in MiniKinetics_step3_k150_mae_ft;
 do
     for dset in ucf101 uav ikea_furniture diving48 hmdb51 mini_ssv2;
     # for dset in hmdb51;
