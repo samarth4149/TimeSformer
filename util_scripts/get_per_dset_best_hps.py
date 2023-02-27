@@ -22,7 +22,7 @@ if __name__ == '__main__':
     
     for m in downstream_modes:
         df = pd.DataFrame(columns=downstream_datasets, index=pd.MultiIndex.from_product([pt_methods, base_lrs], names=['pt_method', 'base_lr']))
-        if os.path.exists and not args.overwrite:
+        if os.path.exists(f'expts/downstream/new_hp_results_{m}.csv') and not args.overwrite:
             df = pd.read_csv(f'expts/downstream/new_hp_results_{m}.csv', index_col=[0,1])
         
         for p in pt_methods:
