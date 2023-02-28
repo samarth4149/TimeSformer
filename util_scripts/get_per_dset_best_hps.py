@@ -14,7 +14,7 @@ if __name__ == '__main__':
     downstream_datasets = ['ucf101', 'hmdb51', 'mini_ssv2', 'diving48', 'ikea_furniture', 'uav',]
     # downstream_datasets = ['hmdb51']
     pt_methods = ['MiniSynthetic_step3_k150inp_mae_stadapter', 'MiniKinetics_step3_k150_mae_ft']
-    downstream_modes = ['linprobe']
+    downstream_modes = ['finetune']
     # downstream_modes = ['lpft']
     # base_lrs = [0.3, 0.1, 0.03, 0.01, 0.003, 0.001, 0.0003, 0.0001, 3.e-5, 1.e-5, 3.e-6, 1.e-6]
     base_lrs = [0.1, 0.01]
