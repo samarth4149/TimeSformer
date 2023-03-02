@@ -16,8 +16,8 @@ if __name__ == '__main__':
     for p in pt_methods:
         for m in downstream_modes:
             for d in downstream_datasets:
-                # curr_path = f'expts/downstream/from_{p}/{p}_{d}_{m}/stdout.log'
-                curr_path = f'expts/downstream/from_MiniKinetics_step3_k150_mae_ft/{p}_{d}_{m}/stdout.log'
+                curr_path = f'expts/downstream/from_{p}/{p}_{d}_{m}/stdout.log'
+                # curr_path = f'expts/downstream/from_MiniKinetics_step3_k150_mae_ft/{p}_{d}_{m}/stdout.log'
                 with open(curr_path, 'r') as f:
                     lines = f.read().splitlines()
                     for l in lines[::-1]:
