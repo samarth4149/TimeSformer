@@ -5,9 +5,11 @@ import subprocess
 import pandas as pd
 
 if __name__ == '__main__':
-    datasets = ['hmdb51', 'ucf101', 'mini_ssv2', 'diving48', 'ikea_furniture', 'uav']
+    # datasets = ['hmdb51', 'ucf101', 'mini_ssv2', 'diving48', 'ikea_furniture', 'uav']
+    datasets = ['ikea_furniture']
     # datasets = ['hmdb51', 'ucf101', 'diving48']
-    backbones = ['MiniSynthetic_step3_k150inp_mae_stadapter', 'MiniKinetics_step3_k150_mae_ft']
+    # backbones = ['MiniSynthetic_step3_k150inp_mae_stadapter', 'MiniKinetics_step3_k150_mae_ft']
+    backbones = ['MiniKinetics_step3_k150_mae_ft']
     # linprobe_results = pd.read_csv('expts/downstream/new_hp_results_finetune.csv', index_col=[0, 1])
     # Get best base_lr for each dataset and backbone
     
