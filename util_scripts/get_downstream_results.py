@@ -8,9 +8,9 @@ from json import JSONDecodeError
 if __name__ == '__main__':
     downstream_datasets = ['ucf101', 'hmdb51', 'mini_ssv2', 'diving48', 'ikea_furniture', 'uav',]
     # downstream_datasets = ['ucf101', 'hmdb51', 'diving48']
-    # pt_methods = ['MiniSynthetic_step3_k150inp_mae_stadapter', 'MiniKinetics_step3_k150_mae_ft']
-    pt_methods = ['MiniKinetics_step3_k150_mae_ft_epoch25', 'MiniKinetics_step3_k150_mae_ft_epoch50']
-    downstream_modes = ['lin_probe']
+    pt_methods = ['MiniSynthetic_step3_k150inp_mae_stadapter', 'MiniKinetics_step3_k150_mae_ft']
+    # pt_methods = ['MiniKinetics_step3_k150_mae_ft_epoch25', 'MiniKinetics_step3_k150_mae_ft_epoch50']
+    downstream_modes = ['lin_probe', 'finetune']
     df = pd.DataFrame(columns=downstream_datasets, index=pd.MultiIndex.from_product([pt_methods, downstream_modes], names=['pt_method', 'mode']))
     
     for p in pt_methods:
@@ -33,4 +33,4 @@ if __name__ == '__main__':
                                 df.loc[(p, m), d] = 100. - float(log_dict['top1_err'])
                             break                            
 
-    df.to_csv('misc_results/downstream_results_diff_epochs.csv')
+    df.to_csv('misc_results/downstream_results.csv')
