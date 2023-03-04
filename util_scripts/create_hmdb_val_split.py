@@ -6,10 +6,11 @@ import csv
 import numpy as np
 
 if __name__ == '__main__':
-    df_path_old = Path('data_files/hmdb51')
-    df_path_new = Path('data_files/hmdb51_new')
+    name = 'hmdb'
+    separator = ' ' #other datasets use ;
+    df_path_old = Path(f'data_files/{name}')
+    df_path_new = Path(f'data_files/{name}_val')
     df_path_new.mkdir(exist_ok=True)
-    separator = ' '
     val_prop = 0.2
     RNG = np.random.RandomState(44)
     
@@ -18,6 +19,7 @@ if __name__ == '__main__':
     with open(df_path_old / 'train.csv', 'r') as f:
         reader = csv.reader(f, delimiter=separator)
         for row in reader:
+            print(row)
             tr_files.append(row[0])
             tr_labels.append(row[1])
     tr_labels = np.array(tr_labels)

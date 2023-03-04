@@ -75,7 +75,7 @@ _C.TRAIN.CHECKPOINT_EPOCH_RESET = False
 _C.TRAIN.CHECKPOINT_CLEAR_NAME_PATTERN = ()  # ("backbone.",)
 
 # If set, clear intermediate checkpoints
-_C.TRAIN.DEL_INTERMEDIATE_CHECKPOINTS = True
+_C.TRAIN.DEL_INTERMEDIATE_CHECKPOINTS = False
 # ---------------------------------------------------------------------------- #
 # Testing options
 # ---------------------------------------------------------------------------- #
@@ -272,6 +272,11 @@ _C.TIMESFORMER.ATTENTION_TYPE = 'divided_space_time'
 _C.TIMESFORMER.PRETRAINED_MODEL = ''
 _C.TIMESFORMER.ST_ADAPTER = False
 _C.TIMESFORMER.ST_ADAPTER_DIM = 384
+_C.TIMESFORMER.TUBLET_DIM=1
+_C.TIMESFORMER.USE_TIME_EMBED=True
+_C.TIMESFORMER.USE_CLS_TOKEN=True
+_C.TIMESFORMER.USE_OMNIVORE_VIT=False
+
 
 ## MixUp parameters
 _C.MIXUP = CfgNode()

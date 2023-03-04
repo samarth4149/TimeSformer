@@ -29,11 +29,23 @@
 #source activate timesformer
 #
 WORKINGDIR=/gpfs/u/home/DPLD/DPLDhwrg/scratch/TimeSformer
+#WORKINGDIR=/dccstor/lwll_data/TimeSformer
 #CURPYTHON=/path/to/python
 
 #srun --label ${CURPYTHON} ${WORKINGDIR}/tools/run_net.py --cfg ${WORKINGDIR}/configs/Kinetics/TimeSformer_divST_8x32_224.yaml NUM_GPUS 8 TRAIN.BATCH_SIZE 8
 
-JOB_NAME=MiniSynthetic_vit_b_pass_inpk150_mae_pt_tatt_only_ft
-python tools/run_net.py --cfg ${WORKINGDIR}/configs/MiniSynthetic/TimeSformer_divST_8x32_224_pass_pt_tatt_only_ft.yaml NUM_GPUS 1 TRAIN.BATCH_SIZE 8 \
-MODEL.MODEL_NAME vit_base_patch16_224 DATA.NUM_FRAMES 16 TIMESFORMER.PRETRAINED_MODEL 'ccc_models/omnimae_vitb_b128_ep200_NB256_ckpt:vitb_b512_ep400_mae_pass-load_ckpt:no_heads.yaml_dset_mae_inpk150_config_200.pt' \
-OUTPUT_DIR expts_test/${JOB_NAME}
+JOB_NAME=MiniSynthetic_vit_b_pass_inpk150
+python tools/run_net.py --cfg ${WORKINGDIR}/configs/MiniSynthetic/TimeSformer_divST_8x32_224_pass_pt.yaml NUM_GPUS 1 TRAIN.BATCH_SIZE 2 \
+MODEL.MODEL_NAME vit_base_patch16_224 DATA.NUM_FRAMES 16 TIMESFORMER.PRETRAINED_MODEL 'ccc_models/omnimae_vitb_b128_ep200_NB256__dset_mae_inpk150_pass_config_200.pt' \
+OUTPUT_DIR expts_test/${JOB_NAME} DATA.PATH_TO_DATA_DIR data_files/minikinetics TIMESFORMER.TUBLET_DIM 2 TIMESFORMER.ATTENTION_TYPE "joint_space_time"
+
+#
+#JOB_NAME=MiniSynthetic_vit_b_pass_inpk150
+#python tools/run_net.py --cfg ${WORKINGDIR}/configs/MiniSynthetic/TimeSformer_divST_8x32_224_pass_pt.yaml NUM_GPUS 1 TRAIN.BATCH_SIZE 2 \
+#MODEL.MODEL_NAME vit_base_patch16_224 DATA.NUM_FRAMES 16 TIMESFORMER.PRETRAINED_MODEL 'expts/MiniSynthetic_vit_b_inpk150_mae_pt/checkpoints/checkpoint_epoch_00075.pyth' \
+#OUTPUT_DIR expts_test/${JOB_NAME} DATA.PATH_TO_DATA_DIR data_files/minikinetics
+
+#JOB_NAME=MiniSynthetic_vit_b_pass_inpk150
+#python tools/run_net.py --cfg ${WORKINGDIR}/configs/MiniSynthetic/TimeSformer_divST_8x32_224_pass_pt.yaml NUM_GPUS 1 TRAIN.BATCH_SIZE 2 \
+#MODEL.MODEL_NAME vit_base_patch16_224 DATA.NUM_FRAMES 16 TIMESFORMER.PRETRAINED_MODEL '/gpfs/u/home/DPLD/DPLDsmms/scratch/torch_home/hub/checkpoints/jx_vit_base_p16_224-80ecf9dd.pth' \
+#OUTPUT_DIR expts_test/${JOB_NAME} DATA.PATH_TO_DATA_DIR data_files/minikinetics

@@ -203,7 +203,7 @@ def main():
         mem_gb=60 * num_gpus_per_node,
         # gpus_per_node=num_gpus_per_node,
         tasks_per_node=num_gpus_per_node,
-        cpus_per_task=24,
+        cpus_per_task=10,
         nodes=nodes,
         timeout_min=timeout_min,  # max is 60 * 72
         # slurm_partition=partition,

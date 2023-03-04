@@ -11,22 +11,24 @@ if __name__ == '__main__':
 
     # pt_methods = ['ccc_omnimae_vitb_b128_ep200_NB256__dset_mae_inpk150_config_200_ep20']
     pt_methods = [
-        'MiniSynthetic_vit_b_pass_inpk150_mae_pt', # divided ST for Inpk150 with PASS pretrain #DONT USER
+        # 'MiniSynthetic_vit_b_pass_inpk150_mae_pt', # divided ST for Inpk150 with PASS pretrain #DONT USER
         'MiniSynthetic_vit_b_inpk150_mae_pt', #divided ST for Inpk150
         'MiniSynthetic_vit_b_inpk150_mae_pt_tatt_only_ft', # for Inpk150 TATT
         # 'MiniSynthetic_vit_b_inpk150_mae_pt_st_adap_only_ft',  # for Inpk150 TATT
         'MiniSynthetic_vit_b_scratch', # divided st from scratch
         'MiniSynthetic_vit_b_scratch_tatt_only_ft', # tatt from scratch
-        'MiniSynthetic_vit_b_scratch_st_adap_only_ft', #st adapter from scratch
-        # 'scratch',  # divided st from scratch
+        # 'MiniSynthetic_vit_b_scratch_st_adap_only_ft', #st adapter from scratch
+        'scratch',  # divided st from scratch
         'ccc_omnimae_vitb_b128_ep200_NB256__dset_mae_inpk150_config_200',
         'ccc_omnimae_vitb_b128_ep200_NB256__dset_mae_k150_config_200',
     ]
-    lr_arr = ["1e-02", "5e-03", "1e-01"]
+    lr_arr = ["5e-03"]
     epoch = 75
-    m = 'lin_probe'
+    m = 'finetune'
+    hf = '1e+01'
     for eval_epoch in [4,8,12,16,20]:
-        df = pd.DataFrame(columns=downstream_datasets, index=pd.MultiIndex.from_product([pt_methods, lr_arr], names=['pt_method', 'lr']))
+        df = pd.DataFrame(columns=downstream_datasets,
+                          index=pd.MultiIndex.from_product([pt_methods, lr_arr], names=['pt_method', 'lr']))
         for lr in lr_arr:
             for p in pt_methods:
                     for d in downstream_datasets:
@@ -36,13 +38,14 @@ if __name__ == '__main__':
                             epoch_string = "_ep20"
                         else:
                             epoch_string = f"_ep{epoch}"
-                        curr_path = f'expts/downstream/from_{p}{epoch_string}/{p}_{d}_{m}_lr{lr}/stdout.log'
+                        hf_string = f"_hf{hf}" if p != "scratch" else ""
+                        curr_path = f'expts/downstream/from_{p}{epoch_string}/{p}_{d}_{m}_lr{lr}{hf_string}/stdout.log'
                         if not os.path.exists(curr_path):
                             print("DOESNT EXIST", curr_path)
                             continue
                         with open(curr_path, 'r') as f:
-                            exists = False
                             lines = f.read().splitlines()
+                            exists = False
                             for l in lines[::-1]:
                                 if 'val_epoch' not in l:
                                     continue
@@ -50,16 +53,16 @@ if __name__ == '__main__':
                                     try:
                                         log_dict = json.loads('{' + l.split('{')[1])
                                     except JSONDecodeError:
+                                        print('Something wrong with log at {}'.format(curr_path))
                                         break
                                     if log_dict['_type']=='val_epoch' and log_dict['epoch']==f'{eval_epoch}/20':
                                         # print('Something wrong with log at {}'.format(curr_path))
                                         df.loc[(p, lr), d] = 100. - float(log_dict['top1_err'])
                                         print(p, lr, d, 100. - float(log_dict['top1_err']))
-                                        exists=True
+                                        exists = True
                                     else:
                                         continue
                                     break
-                            if exists:
-                                print('Epoch {} missing in log at {}'.format(eval_epoch, curr_path))
-
-        df.to_csv(f'downstream_lp_results_ep{eval_epoch}.csv')
+                            if not exists:
+                                print(f'Epoch {eval_epoch} doesnt exist at {curr_path}')
+        df.to_csv(f'downstream_ft_results_ep{eval_epoch}.csv')

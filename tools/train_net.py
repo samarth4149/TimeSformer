@@ -25,7 +25,8 @@ from timm.loss import LabelSmoothingCrossEntropy, SoftTargetCrossEntropy
 
 logger = logging.get_logger(__name__)
 
-
+import os
+os.environ['NCCL_DEBUG'] = 'INFO'
 def train_epoch(
     train_loader, model, optimizer, train_meter, cur_epoch, cfg, writer=None
 ):
@@ -422,9 +423,11 @@ def train(cfg):
     # Load a checkpoint to resume training if applicable.
     if not cfg.TRAIN.FINETUNE:
       start_epoch = cu.load_train_checkpoint(cfg, model, optimizer)
+      logger.info("cfg.TRAIN.FINETUNE {}. cu.load_train_checkpoint {}".format(cfg.TRAIN.FINETUNE, start_epoch))
     else:
       start_epoch = 0
       cu.load_checkpoint(cfg.TRAIN.CHECKPOINT_FILE_PATH, model)
+      logger.info("cfg.TRAIN.FINETUNE {}. cu.load_checkpoint {}".format(cfg.TRAIN.FINETUNE, 'set 0'))
     try:
         cur_model = model.module.model
     except: #no wrapped in DataParallel
