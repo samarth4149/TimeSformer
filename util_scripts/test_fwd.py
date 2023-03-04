@@ -23,7 +23,14 @@ def main():
     args = parse_args()
     if args.num_shards > 1:
        args.output_dir = str(args.job_dir)
+    args.num_shards = 1
     cfg = load_config(args)
+    cfg.defrost()
+    cfg.NUM_GPUS = 1
+    cfg.MODEL.MODEL_NAME = 'vit_base_patch16_224'
+    cfg.DATA.NUM_FRAMES = 16
+    cfg.MODEL.PRETRAINED = True
+    cfg.TIMESFORMER.PRETRAINED_MODEL = '/path/to/pretrained_model.pth'
     model = build_model(cfg)
     load_test_checkpoint(cfg, model)
     
